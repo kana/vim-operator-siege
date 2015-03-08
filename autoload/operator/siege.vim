@@ -50,7 +50,7 @@ function! operator#siege#change(motionwise)  "{{{2
     return
   endif
 
-  call s:delete_or_change(deco)
+  call s:replace(deco)
 endfunction
 
 
@@ -58,7 +58,7 @@ endfunction
 
 function! operator#siege#delete(motionwise)  "{{{2
   " TODO: Respect a:motionwise.
-  call s:delete_or_change(0)
+  call s:replace(0)
 endfunction
 
 
@@ -132,7 +132,7 @@ let s:_deco_table = {}
 
 
 
-function! s:delete_or_change(deco)  "{{{2
+function! s:replace(deco)  "{{{2
   let rc = getreg('z')
   let rt = getregtype('z')
 
