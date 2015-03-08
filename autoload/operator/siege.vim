@@ -29,12 +29,14 @@ function! operator#siege#add(motionwise)  "{{{2
     return
   endif
 
-  let z = getpos("'z")
+  let rc = getreg('z')
+  let rt = getregtype('z')
 
-  call setpos("'z", getpos("'["))
-  execute 'normal!' printf("`]a%s\<Esc>`zi%s\<Esc>", deco[1], deco[0])
+  normal! `[v`]"zd
+  let @z = deco[0] . @z . deco[1]
+  normal! "zP`[
 
-  call setpos("'z", z)
+  call setreg('z', rc, rt)
 
   let s:first = 0
   let s:deco = deco
