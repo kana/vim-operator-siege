@@ -32,9 +32,10 @@ function! operator#siege#add(motionwise)  "{{{2
   let rc = getreg('z')
   let rt = getregtype('z')
 
+  let p = col('$') - 1 == col("']") ? 'p' : 'P'
   normal! `[v`]"zd
   let @z = deco[0] . @z . deco[1]
-  normal! "zP`[
+  execute 'normal!' '"z'.p.'`['
 
   call setreg('z', rc, rt)
 
