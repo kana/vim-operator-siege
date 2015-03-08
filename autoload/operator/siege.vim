@@ -50,27 +50,7 @@ function! operator#siege#change(motionwise)  "{{{2
     return
   endif
 
-  let rc = getreg('z')
-  let rt = getregtype('z')
-
-  normal! `[
-  call search('\S', 'bW')
-  normal! v
-  normal! `]
-  call search('\S', 'W')
-  execute 'normal!' "\<Esc>"
-
-  normal! `<"zyl
-  let bc = @z
-  normal! `>"zyl
-  let ec = @z
-
-  if has_key(s:undeco_table(), bc . ec)
-    execute 'normal!' '`>r'.deco[1]
-    execute 'normal!' '`<r'.deco[0]
-  endif
-
-  call setreg('z', rc, rt)
+  call s:delete_or_change(deco)
 endfunction
 
 
