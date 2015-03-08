@@ -56,6 +56,7 @@ endfunction
 
 function! operator#siege#delete(motionwise)  "{{{2
   " TODO: Respect a:motionwise.
+  " TODO: Consider changing the UI -- target a whole text object, not inside.
   let rc = getreg('z')
   let rt = getregtype('z')
 
