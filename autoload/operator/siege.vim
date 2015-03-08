@@ -135,6 +135,20 @@ let s:user_deco_table = {}
 
 
 
+function! s:key_table()  "{{{2
+  let deco_table = s:deco_table()
+  if s:_key_deco_table isnot deco_table
+    let s:_key_deco_table = deco_table
+    let s:key_table = s:make_key_table(deco_table)
+  endif
+  return s:key_table
+endfunction
+
+let s:_key_deco_table = {}
+
+
+
+
 function! s:make_key_table(deco_table)  "{{{2
   let key_table = {}
   let keys = keys(a:deco_table)
