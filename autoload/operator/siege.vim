@@ -54,6 +54,9 @@ function! operator#siege#change(motionwise)  "{{{2
   endif
 
   call s:replace(deco)
+
+  let s:first = 0
+  let s:deco = deco
 endfunction
 
 
