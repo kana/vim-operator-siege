@@ -56,7 +56,7 @@ endfunction
 
 function! operator#siege#delete(motionwise)  "{{{2
   " TODO: Respect a:motionwise.
-  call s:replace(0)
+  call s:replace()
 endfunction
 
 
@@ -146,7 +146,7 @@ endfunction
 
 
 
-function! s:replace(deco)  "{{{2
+function! s:replace()  "{{{2
   let rc = getreg('z')
   let rt = getregtype('z')
 
@@ -159,15 +159,10 @@ function! s:replace(deco)  "{{{2
 
   let matches = matchlist(@z, '\(\S\)\(.*\)\(\S\)')
   if has_key(s:undeco_table(), matches[1] . matches[3])
-    if a:deco is 0
-      let p = col('$') - 1 == col("'>") ? 'p' : 'P'
-      normal! `<v`>"_d
-      let @z = matches[2]
-      execute 'normal!' '"z'.p.'`['
-    else
-      execute 'normal!' '`>r'.a:deco[1]
-      execute 'normal!' '`<r'.a:deco[0]
-    endif
+    let p = col('$') - 1 == col("'>") ? 'p' : 'P'
+    normal! `<v`>"_d
+    let @z = matches[2]
+    execute 'normal!' '"z'.p.'`['
   endif
 
   call setreg('z', rc, rt)
