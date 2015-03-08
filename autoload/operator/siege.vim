@@ -52,6 +52,30 @@ endfunction
 
 
 
+" s:deco_table  "{{{2
+" TODO: Support user-level customization.
+" TODO: Support at/it.
+let s:deco_table = {
+\   'b': ['(', ')'],
+\   '(': ['(', ')'],
+\   ')': ['(', ')'],
+\   'a': ['<', '>'],
+\   '<': ['<', '>'],
+\   '>': ['<', '>'],
+\   'r': ['[', ']'],
+\   '[': ['[', ']'],
+\   ']': ['[', ']'],
+\   'B': ['{', '}'],
+\   '{': ['{', '}'],
+\   '}': ['{', '}'],
+\   "'": ["'", "'"],
+\   '"': ['"', '"'],
+\   '`': ['`', '`'],
+\ }
+
+
+
+
 function! s:input_deco()  "{{{2
   if s:first
     " TODO: Support user input with two or more characters.
