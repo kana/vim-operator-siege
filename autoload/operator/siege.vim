@@ -44,6 +44,33 @@ endfunction
 
 
 function! operator#siege#change(motionwise)  "{{{2
+  " TODO: Respect a:motionwise.
+  let deco = s:input_deco()
+  if deco is 0
+    return
+  endif
+
+  let rc = getreg('z')
+  let rt = getregtype('z')
+
+  normal! `[
+  call search('\S', 'bW')
+  normal! v
+  normal! `]
+  call search('\S', 'W')
+  execute 'normal!' "\<Esc>"
+
+  normal! `<"zyl
+  let bc = @z
+  normal! `>"zyl
+  let ec = @z
+
+  if has_key(s:undeco_table(), bc . ec)
+    execute 'normal!' '`>r'.deco[1]
+    execute 'normal!' '`<r'.deco[0]
+  endif
+
+  call setreg('z', rc, rt)
 endfunction
 
 
