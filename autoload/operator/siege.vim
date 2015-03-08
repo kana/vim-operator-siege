@@ -78,27 +78,7 @@ endfunction
 
 function! operator#siege#delete(motionwise)  "{{{2
   " TODO: Respect a:motionwise.
-  let rc = getreg('z')
-  let rt = getregtype('z')
-
-  normal! `[
-  call search('\S', 'bW')
-  normal! v
-  normal! `]
-  call search('\S', 'W')
-  execute 'normal!' "\<Esc>"
-
-  normal! `<"zyl
-  let bc = @z
-  normal! `>"zyl
-  let ec = @z
-
-  if has_key(s:undeco_table(), bc . ec)
-    normal! `>"_x
-    normal! `<"_x
-  endif
-
-  call setreg('z', rc, rt)
+  call s:delete_or_change(0)
 endfunction
 
 
