@@ -13,6 +13,7 @@ describe '<Plug>(operator-siege-add)'
 
   it 'encloses target region with decoration characters'
     Expect Do('siwb', 'foo bar baz') ==# '(foo) bar baz'
+    Expect Do('fzsiwb', 'foo bar baz') ==# 'foo bar (baz)'
   end
 
   it 'is repeatable'
