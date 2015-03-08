@@ -56,7 +56,25 @@ endfunction
 
 function! operator#siege#delete(motionwise)  "{{{2
   " TODO: Respect a:motionwise.
-  call s:replace()
+  let rc = getreg('z')
+  let rt = getregtype('z')
+
+  normal! `[
+  call search('\S', 'bW')
+  normal! v
+  normal! `]
+  call search('\S', 'W')
+  normal! "zy
+
+  let matches = matchlist(@z, '\(\S\)\(.*\)\(\S\)')
+  if has_key(s:undeco_table(), matches[1] . matches[3])
+    let p = col('$') - 1 == col("'>") ? 'p' : 'P'
+    normal! `<v`>"_d
+    let @z = matches[2]
+    execute 'normal!' '"z'.p.'`['
+  endif
+
+  call setreg('z', rc, rt)
 endfunction
 
 
@@ -139,31 +157,6 @@ function! s:add_deco(motionwise, deco)  "{{{2
   normal! `[v`]"zd
   let @z = a:deco[0] . @z . a:deco[1]
   execute 'normal!' '"z'.p.'`['
-
-  call setreg('z', rc, rt)
-endfunction
-
-
-
-
-function! s:replace()  "{{{2
-  let rc = getreg('z')
-  let rt = getregtype('z')
-
-  normal! `[
-  call search('\S', 'bW')
-  normal! v
-  normal! `]
-  call search('\S', 'W')
-  normal! "zy
-
-  let matches = matchlist(@z, '\(\S\)\(.*\)\(\S\)')
-  if has_key(s:undeco_table(), matches[1] . matches[3])
-    let p = col('$') - 1 == col("'>") ? 'p' : 'P'
-    normal! `<v`>"_d
-    let @z = matches[2]
-    execute 'normal!' '"z'.p.'`['
-  endif
 
   call setreg('z', rc, rt)
 endfunction
