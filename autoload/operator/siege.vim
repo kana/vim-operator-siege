@@ -143,17 +143,14 @@ function! s:replace(deco)  "{{{2
   normal! v
   normal! `]
   call search('\S', 'W')
-  execute 'normal!' "\<Esc>"
+  normal! "zy
 
-  normal! `<"zyl
-  let bc = @z
-  normal! `>"zyl
-  let ec = @z
-
-  if has_key(s:undeco_table(), bc . ec)
+  let matches = matchlist(@z, '\(\S\)\(.*\)\(\S\)')
+  if has_key(s:undeco_table(), matches[1] . matches[3])
     if a:deco is 0
-      normal! `>"_x
-      normal! `<"_x
+      normal! `<v`>"_d
+      let @z = matches[2]
+      normal! "zP`[
     else
       execute 'normal!' '`>r'.a:deco[1]
       execute 'normal!' '`<r'.a:deco[0]
