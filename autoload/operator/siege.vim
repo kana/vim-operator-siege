@@ -23,6 +23,21 @@
 " }}}
 " Interface  "{{{1
 function! operator#siege#add(motionwise)  "{{{2
+  " TODO: Respect a:motionwise.
+  let deco = s:input_deco()
+  if deco is 0
+    return
+  endif
+
+  let z = getpos("'z")
+
+  call setpos("'z", getpos("'["))
+  execute 'normal!' printf("`]a%s\<Esc>`zi%s\<Esc>", deco[1], deco[0])
+
+  call setpos("'z", z)
+
+  let s:first = 0
+  let s:deco = deco
 endfunction
 
 
