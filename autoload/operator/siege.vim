@@ -206,8 +206,19 @@ endfunction
 
 function! s:input_deco()  "{{{2
   if s:first
-    " TODO: Support user input with two or more characters.
-    return get(s:deco_table(), nr2char(getchar()), 0)
+    let key_table = s:key_table()
+    let key = ''
+    while 1
+      let key .= nr2char(getchar())
+      let type = get(key_table, key, s:WRONG_KEY)
+      if type == s:COMPLETE_KEY
+        return get(s:deco_table(), key, 0)
+      elseif type == s:INCOMPLETE_KEY
+        continue
+      else  " type == s:WRONG_KEY
+        return 0
+      endif
+    endwhile
   else
     return s:deco
   endif
