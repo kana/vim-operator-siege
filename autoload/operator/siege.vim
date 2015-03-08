@@ -51,29 +51,24 @@ endfunction
 
 function! operator#siege#delete(motionwise)  "{{{2
   " TODO: Respect a:motionwise.
-  let bp = getpos("'[")
-  let ep = getpos("']")
   let rc = getreg('z')
   let rt = getregtype('z')
 
-  call setpos('.', bp)
+  normal! `[
   call search('\S', 'bW')
-  normal! "zyl
-  let bc = @z
-
-  call setpos('.', ep)
+  normal! v
+  normal! `]
   call search('\S', 'W')
-  normal! "zyl
+  execute 'normal!' "\<Esc>"
+
+  normal! `<"zyl
+  let bc = @z
+  normal! `>"zyl
   let ec = @z
 
   if has_key(s:undeco_table(), bc . ec)
-    call setpos('.', ep)
-    call search('\S', 'W')
-    normal! "_x
-
-    call setpos('.', bp)
-    call search('\S', 'bW')
-    normal! "_x
+    normal! `>"_x
+    normal! `<"_x
   endif
 
   call setreg('z', rc, rt)
