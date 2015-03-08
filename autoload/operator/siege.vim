@@ -23,21 +23,12 @@
 " }}}
 " Interface  "{{{1
 function! operator#siege#add(motionwise)  "{{{2
-  " TODO: Respect a:motionwise.
   let deco = s:input_deco()
   if deco is 0
     return
   endif
 
-  let rc = getreg('z')
-  let rt = getregtype('z')
-
-  let p = col('$') - 1 == col("']") ? 'p' : 'P'
-  normal! `[v`]"zd
-  let @z = deco[0] . @z . deco[1]
-  execute 'normal!' '"z'.p.'`['
-
-  call setreg('z', rc, rt)
+  call s:add_deco(a:motionwise, deco)
 
   let s:first = 0
   let s:deco = deco
@@ -134,6 +125,22 @@ function! s:undeco_table()  "{{{2
 endfunction
 
 let s:_deco_table = {}
+
+
+
+
+function! s:add_deco(motionwise, deco)  "{{{2
+  " TODO: Respect a:motionwise.
+  let rc = getreg('z')
+  let rt = getregtype('z')
+
+  let p = col('$') - 1 == col("']") ? 'p' : 'P'
+  normal! `[v`]"zd
+  let @z = a:deco[0] . @z . a:deco[1]
+  execute 'normal!' '"z'.p.'`['
+
+  call setreg('z', rc, rt)
+endfunction
 
 
 
