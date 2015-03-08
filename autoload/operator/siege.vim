@@ -156,6 +156,38 @@ let s:_deco_table = {}
 
 
 
+function! s:delete_or_change(deco)  "{{{2
+  let rc = getreg('z')
+  let rt = getregtype('z')
+
+  normal! `[
+  call search('\S', 'bW')
+  normal! v
+  normal! `]
+  call search('\S', 'W')
+  execute 'normal!' "\<Esc>"
+
+  normal! `<"zyl
+  let bc = @z
+  normal! `>"zyl
+  let ec = @z
+
+  if has_key(s:undeco_table(), bc . ec)
+    if a:deco is 0
+      normal! `>"_x
+      normal! `<"_x
+    else
+      execute 'normal!' '`>r'.a:deco[1]
+      execute 'normal!' '`<r'.a:deco[0]
+    endif
+  endif
+
+  call setreg('z', rc, rt)
+endfunction
+
+
+
+
 function! s:input_deco()  "{{{2
   if s:first
     " TODO: Support user input with two or more characters.
