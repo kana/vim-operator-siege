@@ -44,6 +44,7 @@ function! operator#siege#change(motionwise)  "{{{2
     return
   endif
 
+  " Assumes that both operations set natural positions to '[ and '].
   call operator#siege#delete(a:motionwise)
   call s:add_deco(a:motionwise, deco)
 
