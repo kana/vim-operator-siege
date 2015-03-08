@@ -149,9 +149,10 @@ function! s:replace(deco)  "{{{2
   let matches = matchlist(@z, '\(\S\)\(.*\)\(\S\)')
   if has_key(s:undeco_table(), matches[1] . matches[3])
     if a:deco is 0
+      let p = col('$') - 1 == col("'>") ? 'p' : 'P'
       normal! `<v`>"_d
       let @z = matches[2]
-      normal! "zP`[
+      execute 'normal!' '"z'.p.'`['
     else
       execute 'normal!' '`>r'.a:deco[1]
       execute 'normal!' '`<r'.a:deco[0]
