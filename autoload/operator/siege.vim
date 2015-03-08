@@ -46,6 +46,7 @@ endfunction
 
 " Misc.  "{{{1
 function! operator#siege#mark_as_first()  "{{{2
+  let s:first = 1
 endfunction
 
 
