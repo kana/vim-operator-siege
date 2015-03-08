@@ -13,6 +13,7 @@ describe '<Plug>(operator-siege-change)'
 
   it 'changes decoration characters enclosing target region'
     Expect Do('csibB', '(foo) (bar) (baz)') ==# '{foo} (bar) (baz)'
+    Expect Do('fzcsibB', '(foo) (bar) (baz)') ==# '(foo) (bar) {baz}'
   end
 
   it 'is repeatable'
