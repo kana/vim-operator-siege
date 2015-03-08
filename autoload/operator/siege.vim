@@ -44,7 +44,8 @@ function! operator#siege#change(motionwise)  "{{{2
     return
   endif
 
-  call s:replace(deco)
+  call operator#siege#delete(a:motionwise)
+  call s:add_deco(a:motionwise, deco)
 
   let s:first = 0
   let s:deco = deco
