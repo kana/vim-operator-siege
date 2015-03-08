@@ -73,6 +73,8 @@ function! operator#siege#delete(motionwise)  "{{{2
     let p = col('$') - 1 == col("'>") ? 'p' : 'P'
     normal! `<v`>"_d
     let @z = matches[2]
+    " p is important to set meaningful positions to '[ and '], and
+    " `[ is important to locate the cursor at the natural position.
     execute 'normal!' '"z'.p.'`['
   endif
 
