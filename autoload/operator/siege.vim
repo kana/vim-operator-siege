@@ -91,6 +91,22 @@ let s:deco_table = {
 
 
 
+function! s:undeco_table()  "{{{2
+  if s:_deco_table isnot s:deco_table
+    let s:_deco_table = s:deco_table
+    let s:undeco_table = {}
+    for v in values(s:deco_table)
+      let s:undeco_table[v[0] . v[1]] = 1
+    endfor
+  endif
+  return s:undeco_table
+endfunction
+
+let s:_deco_table = {}
+
+
+
+
 function! s:input_deco()  "{{{2
   if s:first
     " TODO: Support user input with two or more characters.
