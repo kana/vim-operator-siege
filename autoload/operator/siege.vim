@@ -76,10 +76,13 @@ endfunction
 
 
 
-" s:deco_table  "{{{2
+function! s:deco_table()  "{{{2
+  return s:default_deco_table
+endfunction
+
 " TODO: Support user-level customization.
 " TODO: Support at/it.
-let s:deco_table = {
+let s:default_deco_table = {
 \   'b': ['(', ')'],
 \   '(': ['(', ')'],
 \   ')': ['(', ')'],
@@ -101,10 +104,11 @@ let s:deco_table = {
 
 
 function! s:undeco_table()  "{{{2
-  if s:_deco_table isnot s:deco_table
-    let s:_deco_table = s:deco_table
+  let deco_table = s:deco_table()
+  if s:_deco_table isnot deco_table
+    let s:_deco_table = deco_table
     let s:undeco_table = {}
-    for v in values(s:deco_table)
+    for v in values(deco_table)
       let s:undeco_table[v[0] . v[1]] = 1
     endfor
   endif
@@ -151,7 +155,7 @@ endfunction
 function! s:input_deco()  "{{{2
   if s:first
     " TODO: Support user input with two or more characters.
-    return get(s:deco_table, nr2char(getchar()), 0)
+    return get(s:deco_table(), nr2char(getchar()), 0)
   else
     return s:deco
   endif
