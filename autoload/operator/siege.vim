@@ -52,6 +52,18 @@ endfunction
 
 
 
+function! s:input_deco()  "{{{2
+  if s:first
+    " TODO: Support user input with two or more characters.
+    return get(s:deco_table, nr2char(getchar()), 0)
+  else
+    return s:deco
+  endif
+endfunction
+
+
+
+
 
 
 
