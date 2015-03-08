@@ -135,6 +135,26 @@ let s:user_deco_table = {}
 
 
 
+function! s:make_key_table(deco_table)  "{{{2
+  let key_table = {}
+  let keys = keys(a:deco_table)
+  call sort(keys)
+  for k in keys
+    for i in range(len(k) - 1)
+      let key_table[k[0:i]] = s:INCOMPLETE_KEY
+    endfor
+    let key_table[k] = s:COMPLETE_KEY
+  endfor
+  return key_table
+endfunction
+
+let s:WRONG_KEY = 0
+let s:INCOMPLETE_KEY = 1
+let s:COMPLETE_KEY = 2
+
+
+
+
 function! s:undeco_table()  "{{{2
   let deco_table = s:deco_table()
   if s:_deco_table isnot deco_table
