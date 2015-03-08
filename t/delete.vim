@@ -13,6 +13,7 @@ describe '<Plug>(operator-siege-delete)'
 
   it 'deletes decoration characters enclosing target region'
     Expect Do('dsib', '(foo) (bar) (baz)') ==# 'foo (bar) (baz)'
+    Expect Do('fzdsib', '(foo) (bar) (baz)') ==# '(foo) (bar) baz'
   end
 
   it 'is repeatable'
