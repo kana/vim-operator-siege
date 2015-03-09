@@ -119,7 +119,7 @@ let s:default_decos = [
 \ ]
 
 if !exists('g:siege_decos')
-  let g:siege_decos = {}
+  let g:siege_decos = []
 endif
 let s:user_decos = {}
 
