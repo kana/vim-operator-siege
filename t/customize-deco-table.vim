@@ -2,9 +2,9 @@ runtime! plugin/**/*.vim
 runtime! t/helpers/**/*.vim
 
 let g:siege_decos = [
-\   {'chars': ["'", "'"], 'keys': ['q']},
-\   {'chars': ['"', '"'], 'keys': ['Q']},
-\   {'chars': ['`', '`'], 'keys': ['x']},
+\   {'chars': ["'", "'"], 'objs': ["a'", "i'"], 'keys': ['q']},
+\   {'chars': ['"', '"'], 'objs': ['a"', 'i"'], 'keys': ['Q']},
+\   {'chars': ['`', '`'], 'objs': ['a`', 'i`'], 'keys': ['x']},
 \   {'chars': ['<<', '>>'], 'keys': ['a']},
 \   {'chars': ['「', '」'], 'keys': ['jk']},
 \ ]
