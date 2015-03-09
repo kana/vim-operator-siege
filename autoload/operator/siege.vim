@@ -100,7 +100,7 @@ function! s:deco_table()  "{{{2
   if s:user_deco_table isnot g:siege_deco_table
     let s:user_deco_table = g:siege_deco_table
     let s:unified_deco_table = {}
-    call extend(s:unified_deco_table, s:default_deco_table)
+    call extend(s:unified_deco_table, s:default_decos)
     call extend(s:unified_deco_table, s:user_deco_table)
   endif
   return s:unified_deco_table
@@ -109,7 +109,7 @@ endfunction
 let s:unified_deco_table = {}
 
 " TODO: Support at/it.
-let s:default_deco_table = [
+let s:default_decos = [
 \   {'chars': ['(', ')'], 'keys': ['(', ')', 'b']},
 \   {'chars': ['<', '>'], 'keys': ['<', '>', 'a']},
 \   {'chars': ['[', ']'], 'keys': ['[', ']', 'r']},
