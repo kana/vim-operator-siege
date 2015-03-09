@@ -73,26 +73,25 @@ endfunction
 
 function! operator#siege#delete(motionwise)  "{{{2
   " TODO: Respect a:motionwise.
-  " TODO: Consider changing the UI -- target a whole text object, not inside.
+  " NB: This operator must be invoked from operator#siege#prepare_to_delete.
   let rc = getreg('z')
   let rt = getregtype('z')
 
-  normal! `[
-  call search('\S', 'bW')
+  let ib = getpos("'[")
+  let ie = getpos("']")
   normal! v
-  normal! `]
-  call search('\S', 'W')
-  normal! "zy
+  execute 'normal' s:deco.objs[0]
+  execute 'normal!' "\<Esc>"
+  let ob = getpos("'<")
+  let oe = getpos("'>")
 
-  let matches = matchlist(@z, '\(\S\)\(.*\)\(\S\)')
-  if has_key(s:undeco_table(), matches[1] . matches[3])
-    let p = col('$') - 1 == col("'>") ? 'p' : 'P'
-    normal! `<v`>"_d
-    let @z = matches[2]
-    " p is important to set meaningful positions to '[ and '], and
-    " `[ is important to locate the cursor at the natural position.
-    execute 'normal!' '"z'.p.'`['
-  endif
+  let [bsp, bc, core, ec, esp] = s:parse_context(ob, oe, ib, ie)
+  let p = col([oe[1], '$']) - 1 == oe[2] ? 'p' : 'P'
+  normal! `<v`>"_d
+  let @z = bsp . core . esp
+  " p is important to set meaningful positions to '[ and '], and
+  " `[ is important to locate the cursor at the natural position.
+  execute 'normal!' '"z'.p.'`['
 
   call setreg('z', rc, rt)
 endfunction
