@@ -1,13 +1,13 @@
 runtime! plugin/**/*.vim
 runtime! t/helpers/**/*.vim
 
-let g:siege_deco_table = {
-\   'q': ["'", "'"],
-\   'Q': ['"', '"'],
-\   'x': ['`', '`'],
-\   'a': ['<<', '>>'],
-\   'jk': ['「', '」'],
-\ }
+let g:siege_deco_table = [
+\   {'chars': ["'", "'"], 'keys': ['q']},
+\   {'chars': ['"', '"'], 'keys': ['Q']},
+\   {'chars': ['`', '`'], 'keys': ['x']},
+\   {'chars': ['<<', '>>'], 'keys': ['a']},
+\   {'chars': ['「', '」'], 'keys': ['jk']},
+\ ]
 
 describe 'g:siege_deco_table'
   before
