@@ -23,7 +23,7 @@
 " }}}
 " Interface  "{{{1
 function! operator#siege#add(motionwise)  "{{{2
-  let deco = s:input_deco()
+  let deco = s:first ? s:input_deco() : s:deco
   if deco is 0
     return
   endif
@@ -39,7 +39,7 @@ endfunction
 
 function! operator#siege#change(motionwise)  "{{{2
   " TODO: Respect a:motionwise.
-  let deco = s:input_deco()
+  let deco = s:first ? s:input_deco() : s:deco
   if deco is 0
     return
   endif
@@ -57,7 +57,7 @@ endfunction
 
 function! operator#siege#prepare_to_delete()  "{{{2
   let s:first = 1
-  let deco = s:input_deco()
+  let deco = s:first ? s:input_deco() : s:deco
   if deco is 0
     " TODO: Show a friendly message on failure.
     return ''
@@ -224,23 +224,19 @@ endfunction
 
 
 function! s:input_deco()  "{{{2
-  if s:first
-    let key_table = s:key_table()
-    let key = ''
-    while 1
-      let key .= nr2char(getchar())
-      let type = get(key_table, key, s:WRONG_KEY)
-      if type == s:COMPLETE_KEY
-        return get(s:deco_table(), key, 0)
-      elseif type == s:INCOMPLETE_KEY
-        continue
-      else  " type == s:WRONG_KEY
-        return 0
-      endif
-    endwhile
-  else
-    return s:deco
-  endif
+  let key_table = s:key_table()
+  let key = ''
+  while 1
+    let key .= nr2char(getchar())
+    let type = get(key_table, key, s:WRONG_KEY)
+    if type == s:COMPLETE_KEY
+      return get(s:deco_table(), key, 0)
+    elseif type == s:INCOMPLETE_KEY
+      continue
+    else  " type == s:WRONG_KEY
+      return 0
+    endif
+  endwhile
 endfunction
 
 
