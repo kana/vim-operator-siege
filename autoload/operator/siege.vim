@@ -97,8 +97,8 @@ endfunction
 
 
 function! s:deco_table()  "{{{2
-  if s:user_deco_table isnot g:siege_deco_table
-    let s:user_deco_table = g:siege_deco_table
+  if s:user_deco_table isnot g:siege_decos
+    let s:user_deco_table = g:siege_decos
     let s:unified_deco_table = {}
     call extend(s:unified_deco_table, s:default_decos)
     call extend(s:unified_deco_table, s:user_deco_table)
@@ -119,8 +119,8 @@ let s:default_decos = [
 \   {'chars': ['`', '`'], 'keys': ['`']},
 \ ]
 
-if !exists('g:siege_deco_table')
-  let g:siege_deco_table = {}
+if !exists('g:siege_decos')
+  let g:siege_decos = {}
 endif
 let s:user_deco_table = {}
 
