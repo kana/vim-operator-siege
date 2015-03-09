@@ -37,6 +37,25 @@ endfunction
 
 
 
+function! operator#siege#prepare_to_change()  "{{{2
+  " TODO: Show a friendly message on failure.
+  let deco_to_delete = s:input_deco()
+  if deco_to_delete is 0
+    return ''
+  endif
+  let deco_to_add = s:input_deco()
+  if deco_to_add is 0
+    return ''
+  endif
+
+  let s:deco_to_delete = deco_to_delete
+  let s:deco_to_add = deco_to_add
+  return "\<Plug>(operator-siege-change)" . deco_to_delete.objs[1]
+endfunction
+
+
+
+
 function! operator#siege#change(motionwise)  "{{{2
   " TODO: Respect a:motionwise.
   let deco = s:first ? s:input_deco() : s:deco_to_add
