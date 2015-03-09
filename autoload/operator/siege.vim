@@ -57,8 +57,8 @@ endfunction
 
 
 function! operator#siege#change(motionwise)  "{{{2
+  " Assumption: s:deco_to_delete and s:deco_to_add are set by the caller.
   " TODO: Respect a:motionwise.
-  " NB: This operator must be invoked from operator#siege#prepare_to_change.
 
   " Assumes that both operations set natural positions to '[ and '].
   call operator#siege#delete(a:motionwise)  " s:deco_to_delete
@@ -83,8 +83,8 @@ endfunction
 
 
 function! operator#siege#delete(motionwise)  "{{{2
+  " Assumption: s:deco_to_delete is set by the caller.
   " TODO: Respect a:motionwise.
-  " NB: This operator must be invoked from operator#siege#prepare_to_delete.
   let rc = getreg('z')
   let rt = getregtype('z')
 
