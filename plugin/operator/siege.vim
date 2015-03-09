@@ -29,8 +29,8 @@ endif
 
 
 
-nmap <expr> <Plug>(siege-change)  operator#siege#prepare_to_change()
-vmap <expr> <Plug>(siege-change)  operator#siege#prepare_to_change()
+nmap <expr> <Plug>(operator-siege-change)  operator#siege#prepare_to_change()
+vmap <expr> <Plug>(operator-siege-change)  operator#siege#prepare_to_change()
 nmap <expr> <Plug>(operator-siege-delete)  operator#siege#prepare_to_delete()
 vmap <expr> <Plug>(operator-siege-delete)  operator#siege#prepare_to_delete()
 
