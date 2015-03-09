@@ -99,10 +99,18 @@ function! operator#siege#delete(motionwise)  "{{{2
   let [bsp, bc, core, ec, esp] = s:parse_context(ob, oe, ib, ie)
   let p = col([oe[1], '$']) - 1 == oe[2] ? 'p' : 'P'
   normal! `<v`>"_d
-  let @z = bsp . core . esp
   " p is important to set meaningful positions to '[ and '], and
+  if bsp == '' && esp == ''
+    silent execute 'normal!' "\"=core\<CR>".p
+  elseif bsp != '' && esp == ''
+    silent execute 'normal!' "\"=bsp\<CR>".p."\"=core\<CR>p"
+  elseif bsp == '' && esp != ''
+    silent execute 'normal!' "\"=esp\<CR>".p."`[\"=core\<CR>P"
+  else  " if bsp != '' && esp != ''
+    silent execute 'normal!' "\"=bsp\<CR>".p."\"=esp\<CR>p`[\"=core\<CR>P"
+  endif
   " `[ is important to locate the cursor at the natural position.
-  execute 'normal!' '"z'.p.'`['
+  normal! `[
 
   call setreg('z', rc, rt)
 endfunction
