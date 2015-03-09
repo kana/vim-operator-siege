@@ -13,7 +13,7 @@ describe 'g:siege_decos'
   before
     new
     map <buffer> s  <Plug>(operator-siege-add)
-    map <buffer> ds  <Plug>(siege-delete)
+    map <buffer> ds  <Plug>(operator-siege-delete)
     map <buffer> cs  <Plug>(siege-change)
   end
 

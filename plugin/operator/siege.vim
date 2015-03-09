@@ -31,8 +31,8 @@ endif
 
 nmap <expr> <Plug>(siege-change)  operator#siege#prepare_to_change()
 vmap <expr> <Plug>(siege-change)  operator#siege#prepare_to_change()
-nmap <expr> <Plug>(siege-delete)  operator#siege#prepare_to_delete()
-vmap <expr> <Plug>(siege-delete)  operator#siege#prepare_to_delete()
+nmap <expr> <Plug>(operator-siege-delete)  operator#siege#prepare_to_delete()
+vmap <expr> <Plug>(operator-siege-delete)  operator#siege#prepare_to_delete()
 
 call operator#user#define('siege-add', 'operator#siege#add',
 \                         'call operator#siege#mark_as_first()')

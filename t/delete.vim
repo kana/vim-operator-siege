@@ -1,10 +1,10 @@
 runtime! plugin/**/*.vim
 runtime! t/helpers/**/*.vim
 
-describe '<Plug>(siege-delete)'
+describe '<Plug>(operator-siege-delete)'
   before
     new
-    map <buffer> ds  <Plug>(siege-delete)
+    map <buffer> ds  <Plug>(operator-siege-delete)
   end
 
   after
