@@ -58,17 +58,11 @@ endfunction
 
 function! operator#siege#change(motionwise)  "{{{2
   " TODO: Respect a:motionwise.
-  let deco = s:first ? s:input_deco() : s:deco_to_add
-  if deco is 0
-    return
-  endif
+  " NB: This operator must be invoked from operator#siege#prepare_to_change.
 
   " Assumes that both operations set natural positions to '[ and '].
-  call operator#siege#delete(a:motionwise)
-  call s:add_deco(a:motionwise, deco)
-
-  let s:first = 0
-  let s:deco_to_add = deco
+  call operator#siege#delete(a:motionwise)  " s:deco_to_delete
+  call s:add_deco(a:motionwise, s:deco_to_add)
 endfunction
 
 
