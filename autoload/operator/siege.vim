@@ -178,8 +178,8 @@ function! s:undeco_table()  "{{{2
   if s:_deco_table isnot deco_table
     let s:_deco_table = deco_table
     let s:undeco_table = {}
-    for v in values(deco_table)
-      let s:undeco_table[v[0] . v[1]] = 1
+    for d in values(deco_table)
+      let s:undeco_table[d.chars[0] . d.chars[1]] = 1
     endfor
   endif
   return s:undeco_table
