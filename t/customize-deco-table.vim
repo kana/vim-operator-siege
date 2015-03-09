@@ -6,6 +6,7 @@ let g:siege_deco_table = {
 \   'Q': ['"', '"'],
 \   'x': ['`', '`'],
 \   'a': ['<<', '>>'],
+\   'jk': ['「', '」'],
 \ }
 
 describe 'g:siege_deco_table'
@@ -28,5 +29,9 @@ describe 'g:siege_deco_table'
 
   it 'allows users to replace default decorators'
     Expect Do('frsfba', 'foo bar baz') ==# 'foo ba<<r b>>az'
+  end
+
+  it 'supports two or more keys to specify a decorator'
+    Expect Do('fasiwjk', 'foo bar baz') ==# 'foo 「bar」 baz'
   end
 end
