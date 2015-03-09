@@ -109,13 +109,13 @@ let s:unified_deco_table = {}
 
 " TODO: Support at/it.
 let s:default_decos = [
-\   {'chars': ['(', ')'], 'keys': ['(', ')', 'b']},
-\   {'chars': ['<', '>'], 'keys': ['<', '>', 'a']},
-\   {'chars': ['[', ']'], 'keys': ['[', ']', 'r']},
-\   {'chars': ['{', '}'], 'keys': ['{', '}', 'B']},
-\   {'chars': ["'", "'"], 'keys': ["'"]},
-\   {'chars': ['"', '"'], 'keys': ['"']},
-\   {'chars': ['`', '`'], 'keys': ['`']},
+\   {'chars': ['(', ')'], 'objs': ['a(', 'i('], 'keys': ['(', ')', 'b']},
+\   {'chars': ['<', '>'], 'objs': ['a<', 'i<'], 'keys': ['<', '>', 'a']},
+\   {'chars': ['[', ']'], 'objs': ['a[', 'i['], 'keys': ['[', ']', 'r']},
+\   {'chars': ['{', '}'], 'objs': ['a{', 'i{'], 'keys': ['{', '}', 'B']},
+\   {'chars': ["'", "'"], 'objs': ["a'", "i'"], 'keys': ["'"]},
+\   {'chars': ['"', '"'], 'objs': ['a"', 'i"'], 'keys': ['"']},
+\   {'chars': ['`', '`'], 'objs': ['a`', 'i`'], 'keys': ['`']},
 \ ]
 
 if !exists('g:siege_decos')
