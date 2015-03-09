@@ -197,7 +197,7 @@ function! s:add_deco(motionwise, deco)  "{{{2
 
   let p = col('$') - 1 == col("']") ? 'p' : 'P'
   normal! `[v`]"zd
-  let @z = a:deco[0] . @z . a:deco[1]
+  let @z = a:deco.chars[0] . @z . a:deco.chars[1]
   " p is important to set meaningful positions to '[ and '], and
   " `[ is important to locate the cursor at the natural position.
   execute 'normal!' '"z'.p.'`['
