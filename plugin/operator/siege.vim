@@ -37,7 +37,7 @@ vmap <expr> <Plug>(siege-delete)  operator#siege#prepare_to_delete()
 call operator#user#define('siege-add', 'operator#siege#add',
 \                         'call operator#siege#mark_as_first()')
 call operator#user#define('siege-change', 'operator#siege#change')
-call operator#user#define('siege-delete', 'operator#siege#delete')
+call operator#user#define('siege-%delete', 'operator#siege#delete')
 
 
 

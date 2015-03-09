@@ -76,7 +76,7 @@ function! operator#siege#prepare_to_delete()  "{{{2
   endif
 
   let s:deco_to_delete = deco
-  return "\<Plug>(operator-siege-delete)" . deco.objs[1]
+  return "\<Plug>(operator-siege-%delete)" . deco.objs[1]
 endfunction
 
 
