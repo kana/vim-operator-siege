@@ -14,7 +14,7 @@ describe 'g:siege_decos'
     new
     map <buffer> s  <Plug>(operator-siege-add)
     map <buffer> ds  <Plug>(siege-delete)
-    map <buffer> cs  <Plug>(operator-siege-change)
+    map <buffer> cs  <Plug>(siege-change)
   end
 
   after
@@ -24,7 +24,7 @@ describe 'g:siege_decos'
   it 'allows users to add new decorators'
     Expect Do('fosiwq', 'foo bar baz') ==# "'foo' bar baz"
     Expect Do('fads"', 'foo "bar" baz') ==# 'foo bar baz'
-    Expect Do('fzcsi"x', 'foo bar "baz"') ==# 'foo bar `baz`'
+    Expect Do('fzcs"x', 'foo bar "baz"') ==# 'foo bar `baz`'
   end
 
   it 'allows users to replace default decorators'
