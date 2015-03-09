@@ -56,14 +56,12 @@ endfunction
 
 
 function! operator#siege#prepare_to_delete()  "{{{2
-  let s:first = 1
-  let deco = s:first ? s:input_deco() : s:deco
+  let deco = s:input_deco()
   if deco is 0
     " TODO: Show a friendly message on failure.
     return ''
   endif
 
-  let s:first = 0
   let s:deco = deco
   return "\<Plug>(operator-siege-delete)" . deco.objs[1]
 endfunction
