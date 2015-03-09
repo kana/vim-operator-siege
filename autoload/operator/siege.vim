@@ -23,7 +23,7 @@
 " }}}
 " Interface  "{{{1
 function! operator#siege#add(motionwise)  "{{{2
-  let deco = s:first ? s:input_deco() : s:deco
+  let deco = s:first ? s:input_deco() : s:deco_to_add
   if deco is 0
     return
   endif
@@ -31,7 +31,7 @@ function! operator#siege#add(motionwise)  "{{{2
   call s:add_deco(a:motionwise, deco)
 
   let s:first = 0
-  let s:deco = deco
+  let s:deco_to_add = deco
 endfunction
 
 
@@ -39,7 +39,7 @@ endfunction
 
 function! operator#siege#change(motionwise)  "{{{2
   " TODO: Respect a:motionwise.
-  let deco = s:first ? s:input_deco() : s:deco
+  let deco = s:first ? s:input_deco() : s:deco_to_add
   if deco is 0
     return
   endif
@@ -49,7 +49,7 @@ function! operator#siege#change(motionwise)  "{{{2
   call s:add_deco(a:motionwise, deco)
 
   let s:first = 0
-  let s:deco = deco
+  let s:deco_to_add = deco
 endfunction
 
 
@@ -62,7 +62,7 @@ function! operator#siege#prepare_to_delete()  "{{{2
     return ''
   endif
 
-  let s:deco = deco
+  let s:deco_to_delete = deco
   return "\<Plug>(operator-siege-delete)" . deco.objs[1]
 endfunction
 
@@ -78,7 +78,7 @@ function! operator#siege#delete(motionwise)  "{{{2
   let ib = getpos("'[")
   let ie = getpos("']")
   normal! v
-  execute 'normal' s:deco.objs[0]
+  execute 'normal' s:deco_to_delete.objs[0]
   execute 'normal!' "\<Esc>"
   let ob = getpos("'<")
   let oe = getpos("'>")
