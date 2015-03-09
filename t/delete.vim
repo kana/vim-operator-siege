@@ -1,10 +1,10 @@
 runtime! plugin/**/*.vim
 runtime! t/helpers/**/*.vim
 
-describe '<Plug>(operator-siege-delete)'
+describe '<Plug>(siege-delete)'
   before
     new
-    map <buffer> ds  <Plug>(operator-siege-delete)
+    map <buffer> ds  <Plug>(siege-delete)
   end
 
   after
@@ -12,13 +12,13 @@ describe '<Plug>(operator-siege-delete)'
   end
 
   it 'deletes decoration characters enclosing target region'
-    Expect Do('dsib', '(foo) (bar) (baz)') ==# 'foo (bar) (baz)'
-    Expect Do('fzdsib', '(foo) (bar) (baz)') ==# '(foo) (bar) baz'
+    Expect Do('dsb', '(foo) (bar) (baz)') ==# 'foo (bar) (baz)'
+    Expect Do('fzdsb', '(foo) (bar) (baz)') ==# '(foo) (bar) baz'
   end
 
   it 'is repeatable'
     SKIP 'Redo buffer is not recorded correctly in a test script.'
-    Expect Do('dsib2fb.', '(foo) (bar) (baz)') ==# 'foo (bar) baz'
+    Expect Do('dsb2fb.', '(foo) (bar) (baz)') ==# 'foo (bar) baz'
   end
 end
 
