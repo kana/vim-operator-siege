@@ -272,6 +272,19 @@ endfunction
 
 
 
+function! s:set_up_finisher(deco)  "{{{2
+  if !has_key(a:deco, 'finisher')
+    return 0
+  endif
+
+  let original_map = maparg(a:deco.finisher, 'c', 0, 1)
+  execute 'cnoremap' '<buffer>' a:deco.finisher  '<Return>'
+  return original_map
+endfunction
+
+
+
+
 function! s:add_deco(motionwise, deco)  "{{{2
   " TODO: Respect a:motionwise.
   let rc = getreg('z')
