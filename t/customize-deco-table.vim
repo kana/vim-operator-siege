@@ -40,4 +40,14 @@ describe 'g:siege_decos'
     Expect Do('fodst', 'f<em>o</em>o') ==# 'foo'
     Expect Do('focstB', 'f<em>o</em>o') ==# 'f{o}o'
   end
+
+  it 'accepts also a custom finisher to input replacements of placeholders'
+    Expect maparg('>', 'c') ==# ''
+    Expect Do("fbsiw<svg>\<Esc>", 'foo bar baz') ==# 'foo <svg>bar</svg> baz'
+
+    cnoremap <buffer> >  QUX
+    Expect Do("fbsiw<svg>\<Esc>", 'foo bar baz') ==# 'foo <svg>bar</svg> baz'
+    Expect maparg('>', 'c') ==# 'QUX'
+    Expect maparg('>', 'c', 0, 1).buffer to_be_true
+  end
 end
