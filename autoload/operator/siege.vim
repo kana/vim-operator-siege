@@ -247,6 +247,28 @@ endfunction
 
 
 
+function! s:expand_deco(deco)  "{{{2
+  " Expand at most one placeholder.
+  " TODO: Support more placeholders?
+  " TODO: Support custom expander for each deco?
+  let i = stridx(a:deco.chars[0], "\1")
+  if i < 0
+    return a:deco
+  endif
+
+  let r = input(a:deco.chars[0][0:i-1])
+
+  let deco = copy(a:deco)
+  let deco.chars = [
+  \   substitute(deco.chars[0], "\1", r, 'g'),
+  \   substitute(deco.chars[1], "\1", r, 'g'),
+  \ ]
+  return deco
+endfunction
+
+
+
+
 function! s:add_deco(motionwise, deco)  "{{{2
   " TODO: Respect a:motionwise.
   let rc = getreg('z')
