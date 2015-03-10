@@ -30,7 +30,7 @@ endfunction
 
 
 function! operator#siege#add(motionwise)  "{{{2
-  let deco = s:first ? s:input_deco() : s:deco_to_add
+  let deco = s:first ? s:input_deco(1) : s:deco_to_add
   if deco is 0
     return
   endif
@@ -46,11 +46,11 @@ endfunction
 
 function! operator#siege#prepare_to_change()  "{{{2
   " TODO: Show a friendly message on failure.
-  let deco_to_delete = s:input_deco()
+  let deco_to_delete = s:input_deco(0)
   if deco_to_delete is 0
     return ''
   endif
-  let deco_to_add = s:input_deco()
+  let deco_to_add = s:input_deco(1)
   if deco_to_add is 0
     return ''
   endif
@@ -76,7 +76,7 @@ endfunction
 
 
 function! operator#siege#prepare_to_delete()  "{{{2
-  let deco = s:input_deco()
+  let deco = s:input_deco(0)
   if deco is 0
     " TODO: Show a friendly message on failure.
     return ''
@@ -227,7 +227,7 @@ let s:_deco_table = {}
 
 
 
-function! s:input_deco()  "{{{2
+function! s:input_deco(expand)  "{{{2
   let key_table = s:key_table()
   let key = ''
   while 1
