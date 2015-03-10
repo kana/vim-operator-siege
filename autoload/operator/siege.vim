@@ -22,7 +22,7 @@
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 " Interface  "{{{1
-function! operator#siege#mark_as_first()  "{{{2
+function! operator#siege#prepare_to_add()  "{{{2
   let s:first = 1
 endfunction
 
