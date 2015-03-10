@@ -285,6 +285,21 @@ endfunction
 
 
 
+function! s:clean_up_finisher(deco, original_map)  "{{{2
+  if a:original_map is 0
+    return
+  endif
+
+  if empty(a:original_map) || !a:original_map.buffer
+    execute 'cunmap' '<buffer>' a:deco.finisher
+  else
+    call s:restore_map(a:original_map)
+  endif
+endfunction
+
+
+
+
 function! s:add_deco(motionwise, deco)  "{{{2
   " TODO: Respect a:motionwise.
   let rc = getreg('z')
