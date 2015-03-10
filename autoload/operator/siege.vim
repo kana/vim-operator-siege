@@ -97,11 +97,10 @@ endfunction
 
 
 function! s:deco_table()  "{{{2
-  if s:user_deco_table isnot g:siege_deco_table
-    let s:user_deco_table = g:siege_deco_table
-    let s:unified_deco_table = {}
-    call extend(s:unified_deco_table, s:default_deco_table)
-    call extend(s:unified_deco_table, s:user_deco_table)
+  if s:user_decos isnot g:siege_decos
+    let s:user_decos = g:siege_decos
+    let all_decos = s:default_decos + s:user_decos
+    let s:unified_deco_table = s:make_deco_table(all_decos)
   endif
   return s:unified_deco_table
 endfunction
@@ -109,28 +108,33 @@ endfunction
 let s:unified_deco_table = {}
 
 " TODO: Support at/it.
-let s:default_deco_table = {
-\   'b': ['(', ')'],
-\   '(': ['(', ')'],
-\   ')': ['(', ')'],
-\   'a': ['<', '>'],
-\   '<': ['<', '>'],
-\   '>': ['<', '>'],
-\   'r': ['[', ']'],
-\   '[': ['[', ']'],
-\   ']': ['[', ']'],
-\   'B': ['{', '}'],
-\   '{': ['{', '}'],
-\   '}': ['{', '}'],
-\   "'": ["'", "'"],
-\   '"': ['"', '"'],
-\   '`': ['`', '`'],
-\ }
+let s:default_decos = [
+\   {'chars': ['(', ')'], 'keys': ['(', ')', 'b']},
+\   {'chars': ['<', '>'], 'keys': ['<', '>', 'a']},
+\   {'chars': ['[', ']'], 'keys': ['[', ']', 'r']},
+\   {'chars': ['{', '}'], 'keys': ['{', '}', 'B']},
+\   {'chars': ["'", "'"], 'keys': ["'"]},
+\   {'chars': ['"', '"'], 'keys': ['"']},
+\   {'chars': ['`', '`'], 'keys': ['`']},
+\ ]
 
-if !exists('g:siege_deco_table')
-  let g:siege_deco_table = {}
+if !exists('g:siege_decos')
+  let g:siege_decos = []
 endif
-let s:user_deco_table = {}
+let s:user_decos = []
+
+
+
+
+function! s:make_deco_table(decos)  "{{{2
+  let deco_table = {}
+  for d in a:decos
+    for k in d.keys
+      let deco_table[k] = d
+    endfor
+  endfor
+  return deco_table
+endfunction
 
 
 
@@ -174,8 +178,8 @@ function! s:undeco_table()  "{{{2
   if s:_deco_table isnot deco_table
     let s:_deco_table = deco_table
     let s:undeco_table = {}
-    for v in values(deco_table)
-      let s:undeco_table[v[0] . v[1]] = 1
+    for d in values(deco_table)
+      let s:undeco_table[d.chars[0] . d.chars[1]] = 1
     endfor
   endif
   return s:undeco_table
@@ -193,7 +197,7 @@ function! s:add_deco(motionwise, deco)  "{{{2
 
   let p = col('$') - 1 == col("']") ? 'p' : 'P'
   normal! `[v`]"zd
-  let @z = a:deco[0] . @z . a:deco[1]
+  let @z = a:deco.chars[0] . @z . a:deco.chars[1]
   " p is important to set meaningful positions to '[ and '], and
   " `[ is important to locate the cursor at the natural position.
   execute 'normal!' '"z'.p.'`['
