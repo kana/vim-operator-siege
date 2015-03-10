@@ -146,13 +146,13 @@ let s:unified_deco_table = {}
 
 let s:default_decos = [
 \   {'chars': ['(', ')'], 'objs': ['a(', 'i('], 'keys': ['(', ')', 'b']},
-\   {'chars': ['<', '>'], 'objs': ['a<', 'i<'], 'keys': ['<', '>', 'a']},
+\   {'chars': ['<', '>'], 'objs': ['a<', 'i<'], 'keys': ['>', 'a']},
 \   {'chars': ['[', ']'], 'objs': ['a[', 'i['], 'keys': ['[', ']', 'r']},
 \   {'chars': ['{', '}'], 'objs': ['a{', 'i{'], 'keys': ['{', '}', 'B']},
 \   {'chars': ["'", "'"], 'objs': ["a'", "i'"], 'keys': ["'"]},
 \   {'chars': ['"', '"'], 'objs': ['a"', 'i"'], 'keys': ['"']},
 \   {'chars': ['`', '`'], 'objs': ['a`', 'i`'], 'keys': ['`']},
-\   {'chars': ["<\1>", "</\1>"], 'objs': ['at', 'it'], 'keys': ['t']},
+\   {'chars': ["<\1>", "</\1>"], 'objs': ['at', 'it'], 'keys': ['<', 't']},
 \ ]
 
 if !exists('g:siege_decos')
