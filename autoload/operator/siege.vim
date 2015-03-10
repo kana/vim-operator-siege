@@ -234,7 +234,7 @@ function! s:input_deco(expand)  "{{{2
     let key .= nr2char(getchar())
     let type = get(key_table, key, s:WRONG_KEY)
     if type == s:COMPLETE_KEY
-      return get(s:deco_table(), key, 0)
+      return s:deco_table()[key]
     elseif type == s:INCOMPLETE_KEY
       continue
     else  " type == s:WRONG_KEY
