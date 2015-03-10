@@ -272,8 +272,6 @@ function! s:parse_context(ob, oe, ib, ie)  "{{{2
 
   let rc = getreg('z')
   let rt = getregtype('z')
-  let vb = getpos("'<")
-  let ve = getpos("'>")
 
   call setpos('.', a:ob)
   normal! v
@@ -300,8 +298,6 @@ function! s:parse_context(ob, oe, ib, ie)  "{{{2
   let core = @z
 
   call setreg('z', rc, rt)
-  call setpos("'<", vb)
-  call setpos("'>", ve)
 
   return [bsp, bc, core, ec, esp]
 endfunction
