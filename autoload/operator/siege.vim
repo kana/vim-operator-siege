@@ -144,7 +144,6 @@ endfunction
 
 let s:unified_deco_table = {}
 
-" TODO: Support at/it.
 let s:default_decos = [
 \   {'chars': ['(', ')'], 'objs': ['a(', 'i('], 'keys': ['(', ')', 'b']},
 \   {'chars': ['<', '>'], 'objs': ['a<', 'i<'], 'keys': ['<', '>', 'a']},
@@ -153,6 +152,7 @@ let s:default_decos = [
 \   {'chars': ["'", "'"], 'objs': ["a'", "i'"], 'keys': ["'"]},
 \   {'chars': ['"', '"'], 'objs': ['a"', 'i"'], 'keys': ['"']},
 \   {'chars': ['`', '`'], 'objs': ['a`', 'i`'], 'keys': ['`']},
+\   {'chars': ["<\1>", "</\1>"], 'objs': ['at', 'it'], 'keys': ['t']},
 \ ]
 
 if !exists('g:siege_decos')
