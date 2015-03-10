@@ -300,6 +300,19 @@ endfunction
 
 
 
+function! s:restore_map(original_map)  "{{{2
+  execute (a:original_map.noremap ? 'cnoremap' : 'cmap')
+  \       (a:original_map.silent ? '<silent>' : '')
+  \       (a:original_map.expr ? '<expr>' : '')
+  \       (a:original_map.buffer ? '<buffer>' : '')
+  \       (a:original_map.nowait ? '<nowait>' : '')
+  \       a:original_map.lhs
+  \       a:original_map.rhs
+endfunction
+
+
+
+
 function! s:add_deco(motionwise, deco)  "{{{2
   " TODO: Respect a:motionwise.
   let rc = getreg('z')
