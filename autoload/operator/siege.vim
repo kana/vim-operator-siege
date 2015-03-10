@@ -152,7 +152,8 @@ let s:default_decos = [
 \   {'chars': ["'", "'"], 'objs': ["a'", "i'"], 'keys': ["'"]},
 \   {'chars': ['"', '"'], 'objs': ['a"', 'i"'], 'keys': ['"']},
 \   {'chars': ['`', '`'], 'objs': ['a`', 'i`'], 'keys': ['`']},
-\   {'chars': ["<\1>", "</\1>"], 'objs': ['at', 'it'], 'keys': ['<', 't']},
+\   {'chars': ["<\1>", "</\1>"], 'objs': ['at', 'it'], 'keys': ['<', 't'],
+\    'finisher': '>'},
 \ ]
 
 if !exists('g:siege_decos')
