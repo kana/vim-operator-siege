@@ -22,6 +22,13 @@
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 " Interface  "{{{1
+function! operator#siege#mark_as_first()  "{{{2
+  let s:first = 1
+endfunction
+
+
+
+
 function! operator#siege#add(motionwise)  "{{{2
   let deco = s:first ? s:input_deco() : s:deco_to_add
   if deco is 0
@@ -126,13 +133,6 @@ endfunction
 
 
 " Misc.  "{{{1
-function! operator#siege#mark_as_first()  "{{{2
-  let s:first = 1
-endfunction
-
-
-
-
 function! s:deco_table()  "{{{2
   if s:user_decos isnot g:siege_decos
     let s:user_decos = g:siege_decos
@@ -227,24 +227,6 @@ let s:_deco_table = {}
 
 
 
-function! s:add_deco(motionwise, deco)  "{{{2
-  " TODO: Respect a:motionwise.
-  let rc = getreg('z')
-  let rt = getregtype('z')
-
-  let p = col('$') - 1 == col("']") ? 'p' : 'P'
-  normal! `[v`]"zd
-  let @z = a:deco.chars[0] . @z . a:deco.chars[1]
-  " p is important to set meaningful positions to '[ and '], and
-  " `[ is important to locate the cursor at the natural position.
-  execute 'normal!' '"z'.p.'`['
-
-  call setreg('z', rc, rt)
-endfunction
-
-
-
-
 function! s:input_deco()  "{{{2
   let key_table = s:key_table()
   let key = ''
@@ -259,6 +241,24 @@ function! s:input_deco()  "{{{2
       return 0
     endif
   endwhile
+endfunction
+
+
+
+
+function! s:add_deco(motionwise, deco)  "{{{2
+  " TODO: Respect a:motionwise.
+  let rc = getreg('z')
+  let rt = getregtype('z')
+
+  let p = col('$') - 1 == col("']") ? 'p' : 'P'
+  normal! `[v`]"zd
+  let @z = a:deco.chars[0] . @z . a:deco.chars[1]
+  " p is important to set meaningful positions to '[ and '], and
+  " `[ is important to locate the cursor at the natural position.
+  execute 'normal!' '"z'.p.'`['
+
+  call setreg('z', rc, rt)
 endfunction
 
 
