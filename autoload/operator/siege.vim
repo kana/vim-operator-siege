@@ -257,7 +257,9 @@ function! s:expand_deco(deco)  "{{{2
     return a:deco
   endif
 
+  let original_map = s:set_up_finisher(a:deco)
   let r = input(a:deco.chars[0][0:i-1])
+  call s:clean_up_finisher(a:deco, original_map)
 
   let deco = copy(a:deco)
   let deco.chars = [
