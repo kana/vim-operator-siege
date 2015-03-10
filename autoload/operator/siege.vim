@@ -98,7 +98,10 @@ function! operator#siege#delete(motionwise)  "{{{2
 
   let [bsp, bc, core, ec, esp] = s:parse_context(ob, oe, ib, ie)
   let p = col([oe[1], '$']) - 1 == oe[2] ? 'p' : 'P'
-  normal! `<v`>"_d
+  call setpos('.', ob)
+  normal! v
+  call setpos('.', oe)
+  normal! "_d
   " p is important to set meaningful positions to '[ and '], and
   if bsp == '' && esp == ''
     silent execute 'normal!' "\"=core\<CR>".p
