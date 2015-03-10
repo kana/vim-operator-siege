@@ -34,4 +34,10 @@ describe 'g:siege_decos'
   it 'supports two or more keys to specify a decorator'
     Expect Do('fasiwjk', 'foo bar baz') ==# 'foo 「bar」 baz'
   end
+
+  it 'asks and expands placeholders in a decorator'
+    Expect Do("fbsiw<div\<Return>", 'foo bar baz') ==# 'foo <div>bar</div> baz'
+    Expect Do('fodst', 'f<em>o</em>o') ==# 'foo'
+    Expect Do('focstB', 'f<em>o</em>o') ==# 'f{o}o'
+  end
 end
