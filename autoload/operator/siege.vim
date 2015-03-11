@@ -345,7 +345,7 @@ function! s:add_deco_linewise(indented, deco)  "{{{2
   normal! `[V`]"zy
   let indent = matchstr(@z, '^\s*')
   let @z = indent . a:deco.chars[0] . "\n"
-  \      . @z
+  \      . (a:indented ? s:indent(@z) : @z)
   \      . indent . a:deco.chars[1] . "\n"
   " p is important to set meaningful positions to '[ and '], and
   " v_p is important to avoid unexpected results on edge cases.
