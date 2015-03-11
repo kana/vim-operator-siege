@@ -338,7 +338,14 @@ endfunction
 
 
 function! s:add_deco_linewise(deco)  "{{{2
-  call s:add_deco_charwise(a:deco)  " TODO: Implement a custom logic.
+  normal! `[V`]"zy
+  let indent = matchstr(@z, '^\s*')
+  let @z = indent . a:deco.chars[0] . "\n"
+  \      . @z
+  \      . indent . a:deco.chars[1] . "\n"
+  " p is important to set meaningful positions to '[ and '], and
+  " v_p is important to avoid unexpected results on edge cases.
+  normal! `[V`]"zp
 endfunction
 
 
