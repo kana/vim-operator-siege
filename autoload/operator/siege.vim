@@ -363,6 +363,20 @@ endfunction
 
 
 
+function! s:indent(content)  "{{{2
+  let indent = repeat(' ', shiftwidth())
+  let lines = split(a:content, '\n', 1)[:-2]
+  if &l:expandtab
+    call map(lines, 'indent . v:val')
+  else
+    call map(lines, 's:unexpand_tabs(indent . s:expand_tabs(v:val))')
+  endif
+  return join(lines, "\n") . "\n"
+endfunction
+
+
+
+
 function! s:parse_context(ob, oe, ib, ie)  "{{{2
   " AAA 'BBB CCC' DDD
   "     ^^     ^ ^
