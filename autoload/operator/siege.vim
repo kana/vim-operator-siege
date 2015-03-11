@@ -314,18 +314,38 @@ endfunction
 
 
 function! s:add_deco(motionwise, deco)  "{{{2
-  " TODO: Respect a:motionwise.
   let rc = getreg('z')
   let rt = getregtype('z')
 
+  call s:add_deco_{a:motionwise}wise(a:deco)
+
+  call setreg('z', rc, rt)
+endfunction
+
+
+
+
+function! s:add_deco_charwise(deco)  "{{{2
   let p = col('$') - 1 == col("']") ? 'p' : 'P'
   normal! `[v`]"zd
   let @z = a:deco.chars[0] . @z . a:deco.chars[1]
   " p is important to set meaningful positions to '[ and '], and
   " `[ is important to locate the cursor at the natural position.
   execute 'normal!' '"z'.p.'`['
+endfunction
 
-  call setreg('z', rc, rt)
+
+
+
+function! s:add_deco_linewise(deco)  "{{{2
+  call s:add_deco_charwise(a:deco)  " TODO: Implement a custom logic.
+endfunction
+
+
+
+
+function! s:add_deco_blockwise(deco)  "{{{2
+  call s:add_deco_charwise(a:deco)  " TODO: Implement a custom logic.
 endfunction
 
 
