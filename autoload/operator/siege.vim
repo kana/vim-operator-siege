@@ -377,6 +377,15 @@ endfunction
 
 
 
+function! s:expand_tabs(line)  "{{{2
+  " Assumption: Tabs don't appear in the middle of indentation.
+  let tabs = matchstr(a:line, '^\t\+')
+  return substitute(a:line, '^\t\+', repeat(' ', &l:tabstop * len(tabs)), '')
+endfunction
+
+
+
+
 function! s:parse_context(ob, oe, ib, ie)  "{{{2
   " AAA 'BBB CCC' DDD
   "     ^^     ^ ^
