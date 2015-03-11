@@ -413,10 +413,10 @@ function! s:parse_context(ob, oe, ib, ie)  "{{{2
   let bsp = bmatches[1]
   let bc = bmatches[2]
 
+  call setpos('.', a:oe)
+  normal! v
   call setpos('.', a:ie)
   call search('.', 'W')
-  normal! v
-  call setpos('.', a:oe)
   normal! "zy
   let ematches = matchlist(@z, '\(.\{-}\)\(\s*\)$')
   let ec = ematches[1]
