@@ -28,12 +28,16 @@ endif
 
 
 
-
 call operator#user#define('siege-add', 'operator#siege#add',
-\                         'call operator#siege#mark_as_first()')
-call operator#user#define('siege-change', 'operator#siege#change',
-\                         'call operator#siege#mark_as_first()')
-call operator#user#define('siege-delete', 'operator#siege#delete')
+\                         'call operator#siege#prepare_to_add()')
+
+nmap <expr> <Plug>(operator-siege-change)  operator#siege#prepare_to_change()
+vmap <expr> <Plug>(operator-siege-change)  operator#siege#prepare_to_change()
+call operator#user#define('siege-%change', 'operator#siege#change')
+
+nmap <expr> <Plug>(operator-siege-delete)  operator#siege#prepare_to_delete()
+vmap <expr> <Plug>(operator-siege-delete)  operator#siege#prepare_to_delete()
+call operator#user#define('siege-%delete', 'operator#siege#delete')
 
 
 

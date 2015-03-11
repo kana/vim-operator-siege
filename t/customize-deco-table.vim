@@ -2,9 +2,9 @@ runtime! plugin/**/*.vim
 runtime! t/helpers/**/*.vim
 
 let g:siege_decos = [
-\   {'chars': ["'", "'"], 'keys': ['q']},
-\   {'chars': ['"', '"'], 'keys': ['Q']},
-\   {'chars': ['`', '`'], 'keys': ['x']},
+\   {'chars': ["'", "'"], 'objs': ["a'", "i'"], 'keys': ['q']},
+\   {'chars': ['"', '"'], 'objs': ['a"', 'i"'], 'keys': ['Q']},
+\   {'chars': ['`', '`'], 'objs': ['a`', 'i`'], 'keys': ['x']},
 \   {'chars': ['<<', '>>'], 'keys': ['a']},
 \   {'chars': ['「', '」'], 'keys': ['jk']},
 \ ]
@@ -23,8 +23,8 @@ describe 'g:siege_decos'
 
   it 'allows users to add new decorators'
     Expect Do('fosiwq', 'foo bar baz') ==# "'foo' bar baz"
-    Expect Do('fadsi"', 'foo "bar" baz') ==# 'foo bar baz'
-    Expect Do('fzcsi"x', 'foo bar "baz"') ==# 'foo bar `baz`'
+    Expect Do('fads"', 'foo "bar" baz') ==# 'foo bar baz'
+    Expect Do('fzcs"x', 'foo bar "baz"') ==# 'foo bar `baz`'
   end
 
   it 'allows users to replace default decorators'

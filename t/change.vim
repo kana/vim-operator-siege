@@ -12,13 +12,13 @@ describe '<Plug>(operator-siege-change)'
   end
 
   it 'changes decoration characters enclosing target region'
-    Expect Do('csibB', '(foo) (bar) (baz)') ==# '{foo} (bar) (baz)'
-    Expect Do('fzcsibB', '(foo) (bar) (baz)') ==# '(foo) (bar) {baz}'
+    Expect Do('csbB', '(foo) (bar) (baz)') ==# '{foo} (bar) (baz)'
+    Expect Do('fzcsbB', '(foo) (bar) (baz)') ==# '(foo) (bar) {baz}'
   end
 
   it 'is repeatable'
     SKIP 'Redo buffer is not recorded correctly in a test script.'
-    Expect Do('csibB2fb', '{foo} (bar) {baz}') ==# '{foo} (bar) {baz}'
+    Expect Do('csbB2fb', '{foo} (bar) {baz}') ==# '{foo} (bar) {baz}'
   end
 end
 

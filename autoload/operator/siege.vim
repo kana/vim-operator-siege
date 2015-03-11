@@ -22,8 +22,15 @@
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 " Interface  "{{{1
+function! operator#siege#prepare_to_add()  "{{{2
+  let s:first = 1
+endfunction
+
+
+
+
 function! operator#siege#add(motionwise)  "{{{2
-  let deco = s:input_deco()
+  let deco = s:first ? s:input_deco() : s:deco_to_add
   if deco is 0
     return
   endif
@@ -31,52 +38,89 @@ function! operator#siege#add(motionwise)  "{{{2
   call s:add_deco(a:motionwise, deco)
 
   let s:first = 0
-  let s:deco = deco
+  let s:deco_to_add = deco
+endfunction
+
+
+
+
+function! operator#siege#prepare_to_change()  "{{{2
+  " TODO: Show a friendly message on failure.
+  let deco_to_delete = s:input_deco()
+  if deco_to_delete is 0
+    return ''
+  endif
+  let deco_to_add = s:input_deco()
+  if deco_to_add is 0
+    return ''
+  endif
+
+  let s:deco_to_delete = deco_to_delete
+  let s:deco_to_add = deco_to_add
+  return "\<Plug>(operator-siege-%change)" . deco_to_delete.objs[1]
 endfunction
 
 
 
 
 function! operator#siege#change(motionwise)  "{{{2
+  " Assumption: s:deco_to_delete and s:deco_to_add are set by the caller.
   " TODO: Respect a:motionwise.
-  let deco = s:input_deco()
-  if deco is 0
-    return
-  endif
 
   " Assumes that both operations set natural positions to '[ and '].
-  call operator#siege#delete(a:motionwise)
-  call s:add_deco(a:motionwise, deco)
+  call operator#siege#delete(a:motionwise)  " s:deco_to_delete
+  call s:add_deco(a:motionwise, s:deco_to_add)
+endfunction
 
-  let s:first = 0
-  let s:deco = deco
+
+
+
+function! operator#siege#prepare_to_delete()  "{{{2
+  let deco = s:input_deco()
+  if deco is 0
+    " TODO: Show a friendly message on failure.
+    return ''
+  endif
+
+  let s:deco_to_delete = deco
+  return "\<Plug>(operator-siege-%delete)" . deco.objs[1]
 endfunction
 
 
 
 
 function! operator#siege#delete(motionwise)  "{{{2
+  " Assumption: s:deco_to_delete is set by the caller.
   " TODO: Respect a:motionwise.
-  " TODO: Consider changing the UI -- target a whole text object, not inside.
   let rc = getreg('z')
   let rt = getregtype('z')
 
-  normal! `[
-  call search('\S', 'bW')
+  let ib = getpos("'[")
+  let ie = getpos("']")
   normal! v
-  normal! `]
-  call search('\S', 'W')
-  normal! "zy
+  execute 'normal' s:deco_to_delete.objs[0]
+  execute 'normal!' "\<Esc>"
+  let ob = getpos("'<")
+  let oe = getpos("'>")
 
-  let matches = matchlist(@z, '\(\S\)\(.*\)\(\S\)')
-  if has_key(s:undeco_table(), matches[1] . matches[3])
-    let p = col('$') - 1 == col("'>") ? 'p' : 'P'
-    normal! `<v`>"_d
-    let @z = matches[2]
-    " p is important to set meaningful positions to '[ and '], and
-    " `[ is important to locate the cursor at the natural position.
-    execute 'normal!' '"z'.p.'`['
+  let [bsp, bc, core, ec, esp] = s:parse_context(ob, oe, ib, ie)
+  let p = col([oe[1], '$']) - 1 == oe[2] ? 'p' : 'P'
+  call setpos('.', ob)
+  normal! v
+  call setpos('.', oe)
+  normal! "_d
+  " p is important to set meaningful positions to '[ and '], and
+  if bsp == '' && esp == ''
+    silent execute 'normal!' "\"=core\<CR>".p
+  elseif bsp != '' && esp == ''
+    silent execute 'normal!' "\"=bsp\<CR>".p."\"=core\<CR>p"
+  elseif bsp == '' && esp != ''
+    silent execute 'normal!' "\"=esp\<CR>".p."`[\"=core\<CR>P"
+  else  " if bsp != '' && esp != ''
+    silent execute 'normal!' "\"=bsp\<CR>".p."\"=esp\<CR>p`[\"=core\<CR>P"
   endif
+  " `[ is important to locate the cursor at the natural position.
+  normal! `[
 
   call setreg('z', rc, rt)
 endfunction
@@ -89,13 +133,6 @@ endfunction
 
 
 " Misc.  "{{{1
-function! operator#siege#mark_as_first()  "{{{2
-  let s:first = 1
-endfunction
-
-
-
-
 function! s:deco_table()  "{{{2
   if s:user_decos isnot g:siege_decos
     let s:user_decos = g:siege_decos
@@ -109,13 +146,13 @@ let s:unified_deco_table = {}
 
 " TODO: Support at/it.
 let s:default_decos = [
-\   {'chars': ['(', ')'], 'keys': ['(', ')', 'b']},
-\   {'chars': ['<', '>'], 'keys': ['<', '>', 'a']},
-\   {'chars': ['[', ']'], 'keys': ['[', ']', 'r']},
-\   {'chars': ['{', '}'], 'keys': ['{', '}', 'B']},
-\   {'chars': ["'", "'"], 'keys': ["'"]},
-\   {'chars': ['"', '"'], 'keys': ['"']},
-\   {'chars': ['`', '`'], 'keys': ['`']},
+\   {'chars': ['(', ')'], 'objs': ['a(', 'i('], 'keys': ['(', ')', 'b']},
+\   {'chars': ['<', '>'], 'objs': ['a<', 'i<'], 'keys': ['<', '>', 'a']},
+\   {'chars': ['[', ']'], 'objs': ['a[', 'i['], 'keys': ['[', ']', 'r']},
+\   {'chars': ['{', '}'], 'objs': ['a{', 'i{'], 'keys': ['{', '}', 'B']},
+\   {'chars': ["'", "'"], 'objs': ["a'", "i'"], 'keys': ["'"]},
+\   {'chars': ['"', '"'], 'objs': ['a"', 'i"'], 'keys': ['"']},
+\   {'chars': ['`', '`'], 'objs': ['a`', 'i`'], 'keys': ['`']},
 \ ]
 
 if !exists('g:siege_decos')
@@ -190,6 +227,25 @@ let s:_deco_table = {}
 
 
 
+function! s:input_deco()  "{{{2
+  let key_table = s:key_table()
+  let key = ''
+  while 1
+    let key .= nr2char(getchar())
+    let type = get(key_table, key, s:WRONG_KEY)
+    if type == s:COMPLETE_KEY
+      return get(s:deco_table(), key, 0)
+    elseif type == s:INCOMPLETE_KEY
+      continue
+    else  " type == s:WRONG_KEY
+      return 0
+    endif
+  endwhile
+endfunction
+
+
+
+
 function! s:add_deco(motionwise, deco)  "{{{2
   " TODO: Respect a:motionwise.
   let rc = getreg('z')
@@ -208,24 +264,42 @@ endfunction
 
 
 
-function! s:input_deco()  "{{{2
-  if s:first
-    let key_table = s:key_table()
-    let key = ''
-    while 1
-      let key .= nr2char(getchar())
-      let type = get(key_table, key, s:WRONG_KEY)
-      if type == s:COMPLETE_KEY
-        return get(s:deco_table(), key, 0)
-      elseif type == s:INCOMPLETE_KEY
-        continue
-      else  " type == s:WRONG_KEY
-        return 0
-      endif
-    endwhile
-  else
-    return s:deco
-  endif
+function! s:parse_context(ob, oe, ib, ie)  "{{{2
+  " AAA 'BBB CCC' DDD
+  "     ^^     ^ ^
+  "    /  \   /   \
+  "   ob  ib ie    oe
+
+  let rc = getreg('z')
+  let rt = getregtype('z')
+
+  call setpos('.', a:ob)
+  normal! v
+  call setpos('.', a:ib)
+  call search('.', 'bW')
+  normal! "zy
+  let bmatches = matchlist(@z, '^\(\s*\)\(.*\)')
+  let bsp = bmatches[1]
+  let bc = bmatches[2]
+
+  call setpos('.', a:ie)
+  call search('.', 'W')
+  normal! v
+  call setpos('.', a:oe)
+  normal! "zy
+  let ematches = matchlist(@z, '\(.\{-}\)\(\s*\)$')
+  let ec = ematches[1]
+  let esp = ematches[2]
+
+  call setpos('.', a:ib)
+  normal! v
+  call setpos('.', a:ie)
+  normal! "zy
+  let core = @z
+
+  call setreg('z', rc, rt)
+
+  return [bsp, bc, core, ec, esp]
 endfunction
 
 
