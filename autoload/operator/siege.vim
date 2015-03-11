@@ -422,8 +422,9 @@ function! s:parse_context(ob, oe, ib, ie)  "{{{2
   let ec = ematches[1]
   let esp = ematches[2]
 
-  call setpos('.', a:ib)
   normal! v
+  call setpos('.', a:ib)
+  normal! o
   call setpos('.', a:ie)
   normal! "zy
   let core = @z
