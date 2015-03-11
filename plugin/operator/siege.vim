@@ -29,7 +29,7 @@ endif
 
 
 call operator#user#define('siege-add', 'operator#siege#add',
-\                         'call operator#siege#prepare_to_add()')
+\                         'call operator#siege#prepare_to_add(0)')
 
 nmap <expr> <Plug>(operator-siege-change)  operator#siege#prepare_to_change()
 vmap <expr> <Plug>(operator-siege-change)  operator#siege#prepare_to_change()
