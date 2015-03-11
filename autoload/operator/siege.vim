@@ -386,6 +386,15 @@ endfunction
 
 
 
+function! s:unexpand_tabs(line)  "{{{2
+  let spaces = matchstr(a:line, '^ \+')
+  let tabs = len(spaces) / &l:tabstop
+  return repeat("\t", tabs) . a:line[(tabs * &l:tabstop):]
+endfunction
+
+
+
+
 function! s:parse_context(ob, oe, ib, ie)  "{{{2
   " AAA 'BBB CCC' DDD
   "     ^^     ^ ^
