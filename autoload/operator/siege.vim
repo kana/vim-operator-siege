@@ -314,12 +314,15 @@ endfunction
 
 
 function! s:add_deco(motionwise, deco)  "{{{2
-  let rc = getreg('z')
-  let rt = getregtype('z')
+  let uc = getreg('"')
+  let ut = getregtype('"')
+  let zc = getreg('z')
+  let zt = getregtype('z')
 
   call s:add_deco_{a:motionwise}wise(a:deco)
 
-  call setreg('z', rc, rt)
+  call setreg('"', uc, ut)
+  call setreg('z', zc, zt)
 endfunction
 
 
