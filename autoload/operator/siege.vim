@@ -106,7 +106,7 @@ function! operator#siege#delete(motionwise)  "{{{2
   let ib = getpos("'<")
   let ie = getpos("'>")
 
-  let [bsp, bc, core, ec, esp] = s:parse_context(ob, oe, ib, ie)
+  let [v, bsp, bc, core, ec, esp] = s:parse_context(ob, oe, ib, ie)
   let p = col([oe[1], '$']) - 1 == oe[2] ? 'p' : 'P'
   call setpos('.', ob)
   normal! v
@@ -431,7 +431,7 @@ function! s:parse_context(ob, oe, ib, ie)  "{{{2
 
   call setreg('z', rc, rt)
 
-  return [bsp, bc, core, ec, esp]
+  return ['v', bsp, bc, core, ec, esp]
 endfunction
 
 
