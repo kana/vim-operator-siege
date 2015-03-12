@@ -98,13 +98,15 @@ function! operator#siege#delete(motionwise)  "{{{2
   let rc = getreg('z')
   let rt = getregtype('z')
 
-  let ib = getpos("'[")
-  let ie = getpos("']")
+  let ob = getpos("'[")
+  let oe = getpos("']")
+  call setpos('.', ob)
+  call search('\S', 'cW')  " Skip spaces included by a' and others.
   normal! v
-  execute 'normal' s:deco_to_delete.objs[0]
+  execute 'normal' s:deco_to_delete.objs[1]
   execute 'normal!' "\<Esc>"
-  let ob = getpos("'<")
-  let oe = getpos("'>")
+  let ib = getpos("'<")
+  let ie = getpos("'>")
 
   let [bsp, bc, core, ec, esp] = s:parse_context(ob, oe, ib, ie)
   let p = col([oe[1], '$']) - 1 == oe[2] ? 'p' : 'P'
