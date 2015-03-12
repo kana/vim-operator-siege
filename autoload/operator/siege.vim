@@ -84,7 +84,8 @@ function! operator#siege#prepare_to_delete()  "{{{2
   endif
 
   let s:deco_to_delete = deco
-  return "\<Plug>(operator-siege-%delete)" . deco.objs[1]
+  " NB: g@iX and yiX don't set the same '[ and '].
+  return "\<Plug>(operator-siege-%delete)" . deco.objs[0]
 endfunction
 
 
