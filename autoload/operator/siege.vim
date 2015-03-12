@@ -429,9 +429,12 @@ function! s:parse_context(ob, oe, ib, ie)  "{{{2
   normal! "zy
   let core = @z
 
+  let V = s:strip(getline(a:ob[1])) ==# s:strip(bc)
+  \    && s:strip(getline(a:oe[1])) ==# s:strip(ec)
+
   call setreg('z', rc, rt)
 
-  return ['v', bsp, bc, core, ec, esp]
+  return [V ? 'V' : 'v', bsp, bc, core, ec, esp]
 endfunction
 
 
