@@ -30,7 +30,7 @@ endfunction
 
 
 function! operator#siege#add(motionwise)  "{{{2
-  let deco = s:first ? s:input_deco() : s:deco_to_add
+  let deco = s:first ? s:input_deco(1) : s:deco_to_add
   if deco is 0
     return
   endif
@@ -46,11 +46,11 @@ endfunction
 
 function! operator#siege#prepare_to_change()  "{{{2
   " TODO: Show a friendly message on failure.
-  let deco_to_delete = s:input_deco()
+  let deco_to_delete = s:input_deco(0)
   if deco_to_delete is 0
     return ''
   endif
-  let deco_to_add = s:input_deco()
+  let deco_to_add = s:input_deco(1)
   if deco_to_add is 0
     return ''
   endif
@@ -76,7 +76,7 @@ endfunction
 
 
 function! operator#siege#prepare_to_delete()  "{{{2
-  let deco = s:input_deco()
+  let deco = s:input_deco(0)
   if deco is 0
     " TODO: Show a friendly message on failure.
     return ''
@@ -144,15 +144,15 @@ endfunction
 
 let s:unified_deco_table = {}
 
-" TODO: Support at/it.
 let s:default_decos = [
 \   {'chars': ['(', ')'], 'objs': ['a(', 'i('], 'keys': ['(', ')', 'b']},
-\   {'chars': ['<', '>'], 'objs': ['a<', 'i<'], 'keys': ['<', '>', 'a']},
+\   {'chars': ['<', '>'], 'objs': ['a<', 'i<'], 'keys': ['>', 'a']},
 \   {'chars': ['[', ']'], 'objs': ['a[', 'i['], 'keys': ['[', ']', 'r']},
 \   {'chars': ['{', '}'], 'objs': ['a{', 'i{'], 'keys': ['{', '}', 'B']},
 \   {'chars': ["'", "'"], 'objs': ["a'", "i'"], 'keys': ["'"]},
 \   {'chars': ['"', '"'], 'objs': ['a"', 'i"'], 'keys': ['"']},
 \   {'chars': ['`', '`'], 'objs': ['a`', 'i`'], 'keys': ['`']},
+\   {'chars': ["<\1>", "</\1>"], 'objs': ['at', 'it'], 'keys': ['<', 't']},
 \ ]
 
 if !exists('g:siege_decos')
@@ -227,20 +227,43 @@ let s:_deco_table = {}
 
 
 
-function! s:input_deco()  "{{{2
+function! s:input_deco(expand)  "{{{2
   let key_table = s:key_table()
   let key = ''
   while 1
     let key .= nr2char(getchar())
     let type = get(key_table, key, s:WRONG_KEY)
     if type == s:COMPLETE_KEY
-      return get(s:deco_table(), key, 0)
+      let deco = s:deco_table()[key]
+      return a:expand ? s:expand_deco(deco) : deco
     elseif type == s:INCOMPLETE_KEY
       continue
     else  " type == s:WRONG_KEY
       return 0
     endif
   endwhile
+endfunction
+
+
+
+
+function! s:expand_deco(deco)  "{{{2
+  " Expand at most one placeholder.
+  " TODO: Support more placeholders?
+  " TODO: Support custom expander for each deco?
+  let i = stridx(a:deco.chars[0], "\1")
+  if i < 0
+    return a:deco
+  endif
+
+  let r = input(a:deco.chars[0][0:i-1])
+
+  let deco = copy(a:deco)
+  let deco.chars = [
+  \   substitute(deco.chars[0], "\1", r, 'g'),
+  \   substitute(deco.chars[1], "\1", r, 'g'),
+  \ ]
+  return deco
 endfunction
 
 
