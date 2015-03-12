@@ -440,6 +440,13 @@ endfunction
 
 
 
+function! s:strip(s)  "{{{2
+  return matchstr(a:s, '^\s*\zs.\{-}\ze\s*$')
+endfunction
+
+
+
+
 
 
 
