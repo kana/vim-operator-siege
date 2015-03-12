@@ -95,8 +95,6 @@ endfunction
 function! operator#siege#delete(motionwise)  "{{{2
   " Assumption: s:deco_to_delete is set by the caller.
   " TODO: Respect a:motionwise.
-  let rc = getreg('z')
-  let rt = getregtype('z')
 
   let ob = getpos("'[")
   let oe = getpos("']")
@@ -126,8 +124,6 @@ function! operator#siege#delete(motionwise)  "{{{2
   endif
   " `[ is important to locate the cursor at the natural position.
   normal! `[
-
-  call setreg('z', rc, rt)
 endfunction
 
 
