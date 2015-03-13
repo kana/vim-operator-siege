@@ -107,21 +107,18 @@ function! operator#siege#delete(motionwise)  "{{{2
   let ie = getpos("'>")
 
   let [v, bsp, bc, core, ec, esp] = s:parse_context(ob, oe, ib, ie)
-  let p = col([oe[1], '$']) - 1 == oe[2] ? 'p' : 'P'
   call setpos('.', ob)
   execute 'normal!' v
   call setpos('.', oe)
-  normal! "_d
   " p is important to set meaningful positions to '[ and '], and
-  if bsp == '' && esp == ''
-    silent execute 'normal!' "\"=core\<CR>".p
-  elseif bsp != '' && esp == ''
-    silent execute 'normal!' "\"=bsp\<CR>".p."\"=core\<CR>p"
-  elseif bsp == '' && esp != ''
-    silent execute 'normal!' "\"=esp\<CR>".p."`[\"=core\<CR>P"
-  else  " if bsp != '' && esp != ''
-    silent execute 'normal!' "\"=bsp\<CR>".p."\"=esp\<CR>p`[\"=core\<CR>P"
+  if bsp != ''
+    silent execute 'normal!' "\"=bsp\<CR>p"
   endif
+  if esp != ''
+    silent execute 'normal!' "\"=esp\<CR>p`["
+  endif
+  let p = esp == '' ? 'p' : 'P'
+  silent execute 'normal!' "\"=core\<CR>".p
   " `[ is important to locate the cursor at the natural position.
   normal! `[
 endfunction
