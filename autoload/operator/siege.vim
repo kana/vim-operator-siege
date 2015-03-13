@@ -152,7 +152,8 @@ let s:default_decos = [
 \   {'chars': ["'", "'"], 'objs': ["a'", "i'"], 'keys': ["'"]},
 \   {'chars': ['"', '"'], 'objs': ['a"', 'i"'], 'keys': ['"']},
 \   {'chars': ['`', '`'], 'objs': ['a`', 'i`'], 'keys': ['`']},
-\   {'chars': ["<\1>", "</\1>"], 'objs': ['at', 'it'], 'keys': ['<', 't']},
+\   {'chars': ["<\1>", "</\1>"], 'objs': ['at', 'it'], 'keys': ['<', 't'],
+\    'finisher': '>'},
 \ ]
 
 if !exists('g:siege_decos')
@@ -256,7 +257,9 @@ function! s:expand_deco(deco)  "{{{2
     return a:deco
   endif
 
+  let original_map = s:set_up_finisher(a:deco)
   let r = input(a:deco.chars[0][0:i-1])
+  call s:clean_up_finisher(a:deco, original_map)
 
   let deco = copy(a:deco)
   let deco.chars = [
@@ -264,6 +267,47 @@ function! s:expand_deco(deco)  "{{{2
   \   substitute(deco.chars[1], "\1", r, 'g'),
   \ ]
   return deco
+endfunction
+
+
+
+
+function! s:set_up_finisher(deco)  "{{{2
+  if !has_key(a:deco, 'finisher')
+    return 0
+  endif
+
+  let original_map = maparg(a:deco.finisher, 'c', 0, 1)
+  execute 'cnoremap' '<buffer>' a:deco.finisher  '<Return>'
+  return original_map
+endfunction
+
+
+
+
+function! s:clean_up_finisher(deco, original_map)  "{{{2
+  if a:original_map is 0
+    return
+  endif
+
+  if empty(a:original_map) || !a:original_map.buffer
+    execute 'cunmap' '<buffer>' a:deco.finisher
+  else
+    call s:restore_map(a:original_map)
+  endif
+endfunction
+
+
+
+
+function! s:restore_map(original_map)  "{{{2
+  execute (a:original_map.noremap ? 'cnoremap' : 'cmap')
+  \       (a:original_map.silent ? '<silent>' : '')
+  \       (a:original_map.expr ? '<expr>' : '')
+  \       (a:original_map.buffer ? '<buffer>' : '')
+  \       (a:original_map.nowait ? '<nowait>' : '')
+  \       a:original_map.lhs
+  \       a:original_map.rhs
 endfunction
 
 
