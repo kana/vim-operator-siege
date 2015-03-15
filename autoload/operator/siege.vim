@@ -305,7 +305,7 @@ function! s:restore_map(original_map)  "{{{2
   \       (a:original_map.silent ? '<silent>' : '')
   \       (a:original_map.expr ? '<expr>' : '')
   \       (a:original_map.buffer ? '<buffer>' : '')
-  \       (a:original_map.nowait ? '<nowait>' : '')
+  \       (get(a:original_map, 'nowait', 0) ? '<nowait>' : '')
   \       a:original_map.lhs
   \       a:original_map.rhs
 endfunction
