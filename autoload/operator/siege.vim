@@ -347,9 +347,9 @@ function! s:delete_deco(motionwise, deco)  "{{{2
   let ib = getpos("'<")
   let ie = getpos("'>")
 
-  let [v, bsp, bc, core, ec, esp] = s:parse_context(ob, oe, ib, ie)
+  let [mw, bsp, bc, core, ec, esp] = s:parse_context(ob, oe, ib, ie)
   call setpos('.', ob)
-  execute 'normal!' v
+  execute 'normal!' operator#user#visual_command_from_wise_name(mw)
   call setpos('.', oe)
   " p is important to set meaningful positions to '[ and '], and
   if bsp != ''
@@ -438,7 +438,7 @@ function! s:parse_context(ob, oe, ib, ie)  "{{{2
 
   call setreg('z', rc, rt)
 
-  return [V ? 'V' : 'v', bsp, bc, core, ec, esp]
+  return [V ? 'line' : 'char', bsp, bc, core, ec, esp]
 endfunction
 
 
