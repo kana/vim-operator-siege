@@ -36,7 +36,7 @@ function! operator#siege#add(motionwise)  "{{{2
     return
   endif
 
-  call s:add_deco(a:motionwise, '', s:indented, deco)
+  call s:add_deco(a:motionwise, 0, s:indented, deco)
 
   let s:first = 0
   let s:deco_to_add = deco
@@ -437,7 +437,7 @@ function! s:parse_context(ob, oe, ib, ie)  "{{{2
 
   let V = s:strip(getline(a:ob[1])) ==# s:strip(bc)
   \    && s:strip(getline(a:oe[1])) ==# s:strip(ec)
-  let indent = V ? matchstr(getline(a:ob[1]), '^\s*') : ''
+  let indent = V ? matchstr(getline(a:ob[1]), '^\s*') : 0
 
   call setreg('z', rc, rt)
 
