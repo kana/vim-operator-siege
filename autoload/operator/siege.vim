@@ -70,7 +70,7 @@ function! operator#siege#change(motionwise)  "{{{2
   " TODO: Respect a:motionwise.
 
   " Assumes that both operations set natural positions to '[ and '].
-  call operator#siege#delete(a:motionwise)  " s:deco_to_delete
+  call s:delete_deco(a:motionwise, s:deco_to_delete)
   call s:add_deco(a:motionwise, 0, s:deco_to_add)
 endfunction
 
