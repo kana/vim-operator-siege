@@ -36,7 +36,7 @@ function! operator#siege#add(motionwise)  "{{{2
     return
   endif
 
-  call s:add_deco(a:motionwise, s:indented, deco)
+  call s:add_deco(a:motionwise, '', s:indented, deco)
 
   let s:first = 0
   let s:deco_to_add = deco
@@ -71,7 +71,7 @@ function! operator#siege#change(motionwise)  "{{{2
 
   " Assumes that both operations set natural positions to '[ and '].
   call s:delete_deco(a:motionwise, s:deco_to_delete)
-  call s:add_deco(a:motionwise, 0, s:deco_to_add)
+  call s:add_deco(a:motionwise, '', 0, s:deco_to_add)
 endfunction
 
 
@@ -285,13 +285,13 @@ endfunction
 
 
 
-function! s:add_deco(motionwise, indented, deco)  "{{{2
+function! s:add_deco(motionwise, deleted_indent, indented, deco)  "{{{2
   let uc = getreg('"')
   let ut = getregtype('"')
   let zc = getreg('z')
   let zt = getregtype('z')
 
-  call s:add_deco_{a:motionwise}wise(a:indented, a:deco)
+  call s:add_deco_{a:motionwise}wise(a:deleted_indent, a:indented, a:deco)
 
   call setreg('"', uc, ut)
   call setreg('z', zc, zt)
@@ -300,7 +300,7 @@ endfunction
 
 
 
-function! s:add_deco_charwise(indented, deco)  "{{{2
+function! s:add_deco_charwise(deleted_indent, indented, deco)  "{{{2
   let p = col('$') - 1 == col("']") ? 'p' : 'P'
   normal! `[v`]"zd
   let @z = a:deco.chars[0] . @z . a:deco.chars[1]
@@ -312,7 +312,7 @@ endfunction
 
 
 
-function! s:add_deco_linewise(indented, deco)  "{{{2
+function! s:add_deco_linewise(deleted_indent, indented, deco)  "{{{2
   normal! `[V`]"zy
   let indent = matchstr(@z, '^\s*')
   let @z = indent . a:deco.chars[0] . "\n"
@@ -326,7 +326,7 @@ endfunction
 
 
 
-function! s:add_deco_blockwise(indented, deco)  "{{{2
+function! s:add_deco_blockwise(deleted_indent, indented, deco)  "{{{2
   " TODO: Implement a custom logic.
   call s:add_deco_charwise(a:indented, a:deco)
 endfunction
