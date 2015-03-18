@@ -94,33 +94,7 @@ endfunction
 
 function! operator#siege#delete(motionwise)  "{{{2
   " Assumption: s:deco_to_delete is set by the caller.
-  " TODO: Respect a:motionwise.
-
-  let ob = getpos("'[")
-  let oe = getpos("']")
-  call setpos('.', ob)
-  call search('\S', 'cW')  " Skip spaces included by a' and others.
-  normal! v
-  execute 'normal' s:deco_to_delete.objs[1]
-  execute 'normal!' "\<Esc>"
-  let ib = getpos("'<")
-  let ie = getpos("'>")
-
-  let [v, bsp, bc, core, ec, esp] = s:parse_context(ob, oe, ib, ie)
-  call setpos('.', ob)
-  execute 'normal!' v
-  call setpos('.', oe)
-  " p is important to set meaningful positions to '[ and '], and
-  if bsp != ''
-    silent execute 'normal!' "\"=bsp\<CR>p"
-  endif
-  if esp != ''
-    silent execute 'normal!' "\"=esp\<CR>p`["
-  endif
-  let p = esp == '' ? 'p' : 'P'
-  silent execute 'normal!' "\"=core\<CR>".p
-  " `[ is important to locate the cursor at the natural position.
-  normal! `[
+  call s:delete_deco(a:motionwise, s:deco_to_delete)
 endfunction
 
 
@@ -355,6 +329,39 @@ endfunction
 function! s:add_deco_blockwise(indented, deco)  "{{{2
   " TODO: Implement a custom logic.
   call s:add_deco_charwise(a:indented, a:deco)
+endfunction
+
+
+
+
+function! s:delete_deco(motionwise, deco)  "{{{2
+  " TODO: Respect a:motionwise.
+
+  let ob = getpos("'[")
+  let oe = getpos("']")
+  call setpos('.', ob)
+  call search('\S', 'cW')  " Skip spaces included by a' and others.
+  normal! v
+  execute 'normal' s:deco_to_delete.objs[1]
+  execute 'normal!' "\<Esc>"
+  let ib = getpos("'<")
+  let ie = getpos("'>")
+
+  let [v, bsp, bc, core, ec, esp] = s:parse_context(ob, oe, ib, ie)
+  call setpos('.', ob)
+  execute 'normal!' v
+  call setpos('.', oe)
+  " p is important to set meaningful positions to '[ and '], and
+  if bsp != ''
+    silent execute 'normal!' "\"=bsp\<CR>p"
+  endif
+  if esp != ''
+    silent execute 'normal!' "\"=esp\<CR>p`["
+  endif
+  let p = esp == '' ? 'p' : 'P'
+  silent execute 'normal!' "\"=core\<CR>".p
+  " `[ is important to locate the cursor at the natural position.
+  normal! `[
 endfunction
 
 
