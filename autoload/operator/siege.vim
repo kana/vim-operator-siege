@@ -67,7 +67,7 @@ endfunction
 
 function! operator#siege#change(motionwise)  "{{{2
   " Assumption: s:deco_to_delete and s:deco_to_add are set by the caller.
-  " TODO: Respect a:motionwise.
+  " NB: a:motionwise is ignored; it is automatically detected from context.
 
   " Assumes that both operations set natural positions to '[ and '].
   let [mw, indent] = s:delete_deco(a:motionwise, s:deco_to_delete)
