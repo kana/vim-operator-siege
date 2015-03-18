@@ -73,10 +73,24 @@ describe '<Plug>(operator-siege-add-with-indent)'
     \   '}',
     \ ]
 
+    setlocal noexpandtab shiftwidth=2 tabstop=8
+    Expect Do('VSB', 'foo') ==# [
+    \   '{',
+    \   '  foo',
+    \   '}',
+    \ ]
+
     setlocal expandtab shiftwidth=2 tabstop=8
     Expect Do('VSB', '      foo') ==# [
     \   '      {',
     \   '        foo',
+    \   '      }',
+    \ ]
+
+    setlocal noexpandtab shiftwidth=2 tabstop=8
+    Expect Do('VSB', '      foo') ==# [
+    \   '      {',
+    \   "\tfoo",
     \   '      }',
     \ ]
 
@@ -85,20 +99,6 @@ describe '<Plug>(operator-siege-add-with-indent)'
     \   '{',
     \   '        foo',
     \   '}',
-    \ ]
-
-    setlocal noexpandtab shiftwidth=2 tabstop=8
-    Expect Do('VSB', 'foo') ==# [
-    \   '{',
-    \   '  foo',
-    \   '}',
-    \ ]
-
-    setlocal noexpandtab shiftwidth=2 tabstop=8
-    Expect Do('VSB', '      foo') ==# [
-    \   '      {',
-    \   "\tfoo",
-    \   '      }',
     \ ]
 
     setlocal noexpandtab shiftwidth=0 tabstop=8
