@@ -70,7 +70,7 @@ function! operator#siege#change(motionwise)  "{{{2
   " NB: a:motionwise is ignored; it is automatically detected from context.
 
   " Assumes that both operations set natural positions to '[ and '].
-  let [mw, indent] = s:delete_deco(a:motionwise, s:deco_to_delete)
+  let [mw, indent] = s:delete_deco(s:deco_to_delete)
   call s:add_deco(mw, indent, 0, s:deco_to_add)
 endfunction
 
@@ -94,7 +94,8 @@ endfunction
 
 function! operator#siege#delete(motionwise)  "{{{2
   " Assumption: s:deco_to_delete is set by the caller.
-  call s:delete_deco(a:motionwise, s:deco_to_delete)
+  " NB: a:motionwise is ignored; it is automatically detected from context.
+  call s:delete_deco(s:deco_to_delete)
 endfunction
 
 
@@ -334,9 +335,7 @@ endfunction
 
 
 
-function! s:delete_deco(motionwise, deco)  "{{{2
-  " NB: a:motionwise is ignored; it is automatically detected from context.
-
+function! s:delete_deco(deco)  "{{{2
   let ob = getpos("'[")
   let oe = getpos("']")
   call setpos('.', ob)
