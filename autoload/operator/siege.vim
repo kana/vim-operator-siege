@@ -347,7 +347,7 @@ function! s:delete_deco(motionwise, deco)  "{{{2
   let ib = getpos("'<")
   let ie = getpos("'>")
 
-  let [mw, bsp, bc, core, ec, esp] = s:parse_context(ob, oe, ib, ie)
+  let [mw, indent, bsp, bc, core, ec, esp] = s:parse_context(ob, oe, ib, ie)
   call setpos('.', ob)
   execute 'normal!' operator#user#visual_command_from_wise_name(mw)
   call setpos('.', oe)
@@ -437,10 +437,11 @@ function! s:parse_context(ob, oe, ib, ie)  "{{{2
 
   let V = s:strip(getline(a:ob[1])) ==# s:strip(bc)
   \    && s:strip(getline(a:oe[1])) ==# s:strip(ec)
+  let indent = V ? matchstr(getline(a:ob[1]), '^\s*') : ''
 
   call setreg('z', rc, rt)
 
-  return [V ? 'line' : 'char', bsp, bc, core, ec, esp]
+  return [V ? 'line' : 'char', indent, bsp, bc, core, ec, esp]
 endfunction
 
 
