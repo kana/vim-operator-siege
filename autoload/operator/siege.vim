@@ -314,7 +314,7 @@ endfunction
 
 function! s:add_deco_linewise(deleted_indent, indented, deco)  "{{{2
   normal! `[V`]"zy
-  let indent = matchstr(@z, '^\s*')
+  let indent = a:deleted_indent is 0 ? matchstr(@z, '^\s*') : a:deleted_indent
   let @z = indent . a:deco.chars[0] . "\n"
   \      . (a:indented ? s:indent(@z) : @z)
   \      . indent . a:deco.chars[1] . "\n"
