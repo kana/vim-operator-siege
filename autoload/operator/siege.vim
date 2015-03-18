@@ -363,7 +363,7 @@ function! s:delete_deco(motionwise, deco)  "{{{2
   " `[ is important to locate the cursor at the natural position.
   normal! `[
 
-  return mw
+  return [mw, indent]
 endfunction
 
 
