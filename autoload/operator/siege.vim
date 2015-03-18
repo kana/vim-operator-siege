@@ -335,7 +335,7 @@ endfunction
 
 
 function! s:delete_deco(motionwise, deco)  "{{{2
-  " TODO: Respect a:motionwise.
+  " NB: a:motionwise is ignored; it is automatically detected from context.
 
   let ob = getpos("'[")
   let oe = getpos("']")
