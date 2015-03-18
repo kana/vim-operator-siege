@@ -34,11 +34,11 @@ call operator#user#define('siege-add-with-indent', 'operator#siege#add',
 \                         'call operator#siege#prepare_to_add(1)')
 
 nmap <expr> <Plug>(operator-siege-change)  operator#siege#prepare_to_change()
-vmap <expr> <Plug>(operator-siege-change)  operator#siege#prepare_to_change()
+vnoremap <Plug>(operator-siege-change)  <Nop>
 call operator#user#define('siege-%change', 'operator#siege#change')
 
 nmap <expr> <Plug>(operator-siege-delete)  operator#siege#prepare_to_delete()
-vmap <expr> <Plug>(operator-siege-delete)  operator#siege#prepare_to_delete()
+vnoremap <Plug>(operator-siege-delete)  <Nop>
 call operator#user#define('siege-%delete', 'operator#siege#delete')
 
 
