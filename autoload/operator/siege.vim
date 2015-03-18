@@ -71,7 +71,7 @@ function! operator#siege#change(motionwise)  "{{{2
 
   " Assumes that both operations set natural positions to '[ and '].
   let [mw, indent] = s:delete_deco(a:motionwise, s:deco_to_delete)
-  call s:add_deco(mw, '', 0, s:deco_to_add)
+  call s:add_deco(mw, indent, 0, s:deco_to_add)
 endfunction
 
 
