@@ -65,7 +65,7 @@ describe '<Plug>(operator-siege-add-with-indent)'
     \ ]
   end
 
-  it 'indents according to the current options'
+  it 'indents according to the current options (shiftwidth != 0)'
     setlocal expandtab shiftwidth=2 tabstop=8
     Expect Do('VSB', 'foo') ==# [
     \   '{',
@@ -93,6 +93,12 @@ describe '<Plug>(operator-siege-add-with-indent)'
     \   "\tfoo",
     \   '      }',
     \ ]
+  end
+
+  it 'indents according to the current options (shiftwidth == 0)'
+    if v:version < 703 || v:version == 703 && !has('patch694')
+      SKIP 'Vim older than 7.3.694 do not allow to set shiftwidth to 0'
+    endif
 
     setlocal expandtab shiftwidth=0 tabstop=8
     Expect Do('VSB', 'foo') ==# [
