@@ -58,7 +58,8 @@ function! operator#siege#prepare_to_change()  "{{{2
 
   let s:deco_to_delete = deco_to_delete
   let s:deco_to_add = deco_to_add
-  return "\<Plug>(operator-siege-%change)" . deco_to_delete.objs[1]
+  " NB: g@iX and yiX don't set the same '[ and '].
+  return "\<Plug>(operator-siege-%change)" . deco_to_delete.objs[0]
 endfunction
 
 
@@ -84,7 +85,8 @@ function! operator#siege#prepare_to_delete()  "{{{2
   endif
 
   let s:deco_to_delete = deco
-  return "\<Plug>(operator-siege-%delete)" . deco.objs[1]
+  " NB: g@iX and yiX don't set the same '[ and '].
+  return "\<Plug>(operator-siege-%delete)" . deco.objs[0]
 endfunction
 
 
@@ -93,37 +95,32 @@ endfunction
 function! operator#siege#delete(motionwise)  "{{{2
   " Assumption: s:deco_to_delete is set by the caller.
   " TODO: Respect a:motionwise.
-  let rc = getreg('z')
-  let rt = getregtype('z')
 
-  let ib = getpos("'[")
-  let ie = getpos("']")
-  normal! v
-  execute 'normal' s:deco_to_delete.objs[0]
-  execute 'normal!' "\<Esc>"
-  let ob = getpos("'<")
-  let oe = getpos("'>")
-
-  let [bsp, bc, core, ec, esp] = s:parse_context(ob, oe, ib, ie)
-  let p = col([oe[1], '$']) - 1 == oe[2] ? 'p' : 'P'
+  let ob = getpos("'[")
+  let oe = getpos("']")
   call setpos('.', ob)
+  call search('\S', 'cW')  " Skip spaces included by a' and others.
   normal! v
+  execute 'normal' s:deco_to_delete.objs[1]
+  execute 'normal!' "\<Esc>"
+  let ib = getpos("'<")
+  let ie = getpos("'>")
+
+  let [v, bsp, bc, core, ec, esp] = s:parse_context(ob, oe, ib, ie)
+  call setpos('.', ob)
+  execute 'normal!' v
   call setpos('.', oe)
-  normal! "_d
   " p is important to set meaningful positions to '[ and '], and
-  if bsp == '' && esp == ''
-    silent execute 'normal!' "\"=core\<CR>".p
-  elseif bsp != '' && esp == ''
-    silent execute 'normal!' "\"=bsp\<CR>".p."\"=core\<CR>p"
-  elseif bsp == '' && esp != ''
-    silent execute 'normal!' "\"=esp\<CR>".p."`[\"=core\<CR>P"
-  else  " if bsp != '' && esp != ''
-    silent execute 'normal!' "\"=bsp\<CR>".p."\"=esp\<CR>p`[\"=core\<CR>P"
+  if bsp != ''
+    silent execute 'normal!' "\"=bsp\<CR>p"
   endif
+  if esp != ''
+    silent execute 'normal!' "\"=esp\<CR>p`["
+  endif
+  let p = esp == '' ? 'p' : 'P'
+  silent execute 'normal!' "\"=core\<CR>".p
   " `[ is important to locate the cursor at the natural position.
   normal! `[
-
-  call setreg('z', rc, rt)
 endfunction
 
 
@@ -413,24 +410,35 @@ function! s:parse_context(ob, oe, ib, ie)  "{{{2
   let bsp = bmatches[1]
   let bc = bmatches[2]
 
+  call setpos('.', a:oe)
+  normal! v
   call setpos('.', a:ie)
   call search('.', 'W')
-  normal! v
-  call setpos('.', a:oe)
   normal! "zy
   let ematches = matchlist(@z, '\(.\{-}\)\(\s*\)$')
   let ec = ematches[1]
   let esp = ematches[2]
 
-  call setpos('.', a:ib)
   normal! v
+  call setpos('.', a:ib)
+  normal! o
   call setpos('.', a:ie)
   normal! "zy
   let core = @z
 
+  let V = s:strip(getline(a:ob[1])) ==# s:strip(bc)
+  \    && s:strip(getline(a:oe[1])) ==# s:strip(ec)
+
   call setreg('z', rc, rt)
 
-  return [bsp, bc, core, ec, esp]
+  return [V ? 'V' : 'v', bsp, bc, core, ec, esp]
+endfunction
+
+
+
+
+function! s:strip(s)  "{{{2
+  return matchstr(a:s, '^\s*\zs.\{-}\ze\s*$')
 endfunction
 
 
