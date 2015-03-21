@@ -44,10 +44,5 @@ describe '<Plug>(operator-siege-change)'
     \   '}',
     \ ]
   end
-
-  it 'is repeatable'
-    SKIP 'Redo buffer is not recorded correctly in a test script.'
-    Expect Do('csbB2fb', '{foo} (bar) {baz}') ==# '{foo} (bar) {baz}'
-  end
 end
 
