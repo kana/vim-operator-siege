@@ -36,7 +36,7 @@ function! operator#siege#add(motionwise)  "{{{2
     return
   endif
 
-  call s:add_deco(a:motionwise, s:indented, deco)
+  call s:add_deco(a:motionwise, 0, s:indented, deco)
 
   let s:first = 0
   let s:deco_to_add = deco
@@ -67,11 +67,11 @@ endfunction
 
 function! operator#siege#change(motionwise)  "{{{2
   " Assumption: s:deco_to_delete and s:deco_to_add are set by the caller.
-  " TODO: Respect a:motionwise.
+  " NB: a:motionwise is ignored; it is automatically detected from context.
 
   " Assumes that both operations set natural positions to '[ and '].
-  call operator#siege#delete(a:motionwise)  " s:deco_to_delete
-  call s:add_deco(a:motionwise, 0, s:deco_to_add)
+  let [mw, indent] = s:delete_deco(s:deco_to_delete)
+  call s:add_deco(mw, indent, 0, s:deco_to_add)
 endfunction
 
 
@@ -94,33 +94,8 @@ endfunction
 
 function! operator#siege#delete(motionwise)  "{{{2
   " Assumption: s:deco_to_delete is set by the caller.
-  " TODO: Respect a:motionwise.
-
-  let ob = getpos("'[")
-  let oe = getpos("']")
-  call setpos('.', ob)
-  call search('\S', 'cW')  " Skip spaces included by a' and others.
-  normal! v
-  execute 'normal' s:deco_to_delete.objs[1]
-  execute 'normal!' "\<Esc>"
-  let ib = getpos("'<")
-  let ie = getpos("'>")
-
-  let [v, bsp, bc, core, ec, esp] = s:parse_context(ob, oe, ib, ie)
-  call setpos('.', ob)
-  execute 'normal!' v
-  call setpos('.', oe)
-  " p is important to set meaningful positions to '[ and '], and
-  if bsp != ''
-    silent execute 'normal!' "\"=bsp\<CR>p"
-  endif
-  if esp != ''
-    silent execute 'normal!' "\"=esp\<CR>p`["
-  endif
-  let p = esp == '' ? 'p' : 'P'
-  silent execute 'normal!' "\"=core\<CR>".p
-  " `[ is important to locate the cursor at the natural position.
-  normal! `[
+  " NB: a:motionwise is ignored; it is automatically detected from context.
+  call s:delete_deco(s:deco_to_delete)
 endfunction
 
 
@@ -311,13 +286,13 @@ endfunction
 
 
 
-function! s:add_deco(motionwise, indented, deco)  "{{{2
+function! s:add_deco(motionwise, deleted_indent, indented, deco)  "{{{2
   let uc = getreg('"')
   let ut = getregtype('"')
   let zc = getreg('z')
   let zt = getregtype('z')
 
-  call s:add_deco_{a:motionwise}wise(a:indented, a:deco)
+  call s:add_deco_{a:motionwise}wise(a:deleted_indent, a:indented, a:deco)
 
   call setreg('"', uc, ut)
   call setreg('z', zc, zt)
@@ -326,7 +301,7 @@ endfunction
 
 
 
-function! s:add_deco_charwise(indented, deco)  "{{{2
+function! s:add_deco_charwise(deleted_indent, indented, deco)  "{{{2
   let p = col('$') - 1 == col("']") ? 'p' : 'P'
   normal! `[v`]"zd
   let @z = a:deco.chars[0] . @z . a:deco.chars[1]
@@ -338,9 +313,9 @@ endfunction
 
 
 
-function! s:add_deco_linewise(indented, deco)  "{{{2
+function! s:add_deco_linewise(deleted_indent, indented, deco)  "{{{2
   normal! `[V`]"zy
-  let indent = matchstr(@z, '^\s*')
+  let indent = a:deleted_indent is 0 ? matchstr(@z, '^\s*') : a:deleted_indent
   let @z = indent . a:deco.chars[0] . "\n"
   \      . (a:indented ? s:indent(@z) : @z)
   \      . indent . a:deco.chars[1] . "\n"
@@ -352,9 +327,42 @@ endfunction
 
 
 
-function! s:add_deco_blockwise(indented, deco)  "{{{2
+function! s:add_deco_blockwise(deleted_indent, indented, deco)  "{{{2
   " TODO: Implement a custom logic.
   call s:add_deco_charwise(a:indented, a:deco)
+endfunction
+
+
+
+
+function! s:delete_deco(deco)  "{{{2
+  let ob = getpos("'[")
+  let oe = getpos("']")
+  call setpos('.', ob)
+  call search('\S', 'cW')  " Skip spaces included by a' and others.
+  normal! v
+  execute 'normal' s:deco_to_delete.objs[1]
+  execute 'normal!' "\<Esc>"
+  let ib = getpos("'<")
+  let ie = getpos("'>")
+
+  let [mw, indent, bsp, bc, core, ec, esp] = s:parse_context(ob, oe, ib, ie)
+  call setpos('.', ob)
+  execute 'normal!' operator#user#visual_command_from_wise_name(mw)
+  call setpos('.', oe)
+  " p is important to set meaningful positions to '[ and '], and
+  if bsp != ''
+    silent execute 'normal!' "\"=bsp\<CR>p"
+  endif
+  if esp != ''
+    silent execute 'normal!' "\"=esp\<CR>p`["
+  endif
+  let p = esp == '' ? 'p' : 'P'
+  silent execute 'normal!' "\"=core\<CR>".p
+  " `[ is important to locate the cursor at the natural position.
+  normal! `[
+
+  return [mw, indent]
 endfunction
 
 
@@ -428,10 +436,11 @@ function! s:parse_context(ob, oe, ib, ie)  "{{{2
 
   let V = s:strip(getline(a:ob[1])) ==# s:strip(bc)
   \    && s:strip(getline(a:oe[1])) ==# s:strip(ec)
+  let indent = V ? matchstr(getline(a:ob[1]), '^\s*') : 0
 
   call setreg('z', rc, rt)
 
-  return [V ? 'V' : 'v', bsp, bc, core, ec, esp]
+  return [V ? 'line' : 'char', indent, bsp, bc, core, ec, esp]
 endfunction
 
 
