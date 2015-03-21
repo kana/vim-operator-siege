@@ -1,0 +1,16 @@
+#!/bin/bash
+
+vim -u NONE -i NONE -N \
+  -S 't/helpers/bootstrap.vim' \
+  -s <(cat "$1"; echo $'\c\\cn:w! t/,test.out\n:qall!') \
+  >/dev/null 2>&1
+
+diff="$(diff --unified "$2" t/,test.out)"
+if [ $? = 0 ]
+then
+  echo 'ok 1'
+else
+  echo 'not ok 1'
+  echo "$diff" | sed 's/^/# /'
+fi
+echo '1..1'
