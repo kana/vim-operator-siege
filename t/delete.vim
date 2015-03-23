@@ -40,10 +40,5 @@ describe '<Plug>(operator-siege-delete)'
     \   '}',
     \ ]
   end
-
-  it 'is repeatable'
-    SKIP 'Redo buffer is not recorded correctly in a test script.'
-    Expect Do('dsb2fb.', '(foo) (bar) (baz)') ==# 'foo (bar) baz'
-  end
 end
 

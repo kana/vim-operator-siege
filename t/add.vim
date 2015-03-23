@@ -69,9 +69,4 @@ describe '<Plug>(operator-siege-add)'
     \   '}',
     \ ]
   end
-
-  it 'is repeatable'
-    SKIP 'Redo buffer is not recorded correctly in a test script.'
-    Expect Do('siwb2fb.', 'foo bar baz') ==# '(foo) bar (baz)'
-  end
 end

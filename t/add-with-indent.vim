@@ -114,9 +114,4 @@ describe '<Plug>(operator-siege-add-with-indent)'
     \   '}',
     \ ]
   end
-
-  it 'is repeatable'
-    SKIP 'Redo buffer is not recorded correctly in a test script.'
-    Expect Do('Siwb2fb.', 'foo bar baz') ==# '(foo) bar (baz)'
-  end
 end
