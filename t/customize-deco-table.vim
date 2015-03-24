@@ -1,7 +1,7 @@
 runtime! plugin/**/*.vim
 runtime! t/helpers/**/*.vim
 
-let g:siege_decos = [
+let g:operator_siege_decos = [
 \   {'chars': ["'", "'"], 'objs': ["a'", "i'"], 'keys': ['q']},
 \   {'chars': ['"', '"'], 'objs': ['a"', 'i"'], 'keys': ['Q']},
 \   {'chars': ['`', '`'], 'objs': ['a`', 'i`'], 'keys': ['x']},
@@ -9,7 +9,7 @@ let g:siege_decos = [
 \   {'chars': ['「', '」'], 'keys': ['jk']},
 \ ]
 
-describe 'g:siege_decos'
+describe 'g:operator_siege_decos'
   before
     new
     map <buffer> s  <Plug>(operator-siege-add)
