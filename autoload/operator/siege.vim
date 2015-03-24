@@ -107,8 +107,8 @@ endfunction
 
 " Misc.  "{{{1
 function! s:deco_table()  "{{{2
-  if s:user_decos isnot g:siege_decos
-    let s:user_decos = g:siege_decos
+  if s:user_decos isnot g:operator_siege_decos
+    let s:user_decos = g:operator_siege_decos
     let all_decos = s:default_decos + s:user_decos
     let s:unified_deco_table = s:make_deco_table(all_decos)
   endif
@@ -129,8 +129,8 @@ let s:default_decos = [
 \    'finisher': '>'},
 \ ]
 
-if !exists('g:siege_decos')
-  let g:siege_decos = []
+if !exists('g:operator_siege_decos')
+  let g:operator_siege_decos = []
 endif
 let s:user_decos = []
 
