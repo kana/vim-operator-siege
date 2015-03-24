@@ -1,5 +1,5 @@
 " vim-operator-siege - Operator to besiege text
-" Version: 0.0.0
+" Version: 0.0.1
 " Copyright (C) 2015 Kana Natsuno <http://whileimautomaton.net/>
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
