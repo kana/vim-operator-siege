@@ -69,4 +69,31 @@ describe '<Plug>(operator-siege-add)'
     \   '}',
     \ ]
   end
+
+  it 'encloses target blockwise region as if characterwise at the moment'
+    Expect Do("j^\<C-v>jlsr", [
+    \   '  foo',
+    \   '    bar',
+    \   '    baz',
+    \   '  qux',
+    \ ]) ==# [
+    \   '  foo',
+    \   '    [bar',
+    \   '    ba]z',
+    \   '  qux',
+    \ ]
+
+    " TODO:
+    " Expect Do("j^\<C-v>jksjr", [
+    " \   '  foo',
+    " \   '    bar',
+    " \   '    baz',
+    " \   '  qux',
+    " \ ]) ==# [
+    " \   '  foo',
+    " \   '    [ba]r',
+    " \   '    [ba]z',
+    " \   '  qux',
+    " \ ]
+  end
 end
