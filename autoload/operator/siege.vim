@@ -184,23 +184,6 @@ let s:COMPLETE_KEY = 2
 
 
 
-function! s:undeco_table()  "{{{2
-  let deco_table = s:deco_table()
-  if s:_deco_table isnot deco_table
-    let s:_deco_table = deco_table
-    let s:undeco_table = {}
-    for d in values(deco_table)
-      let s:undeco_table[d.chars[0] . d.chars[1]] = 1
-    endfor
-  endif
-  return s:undeco_table
-endfunction
-
-let s:_deco_table = {}
-
-
-
-
 function! s:input_deco(expand)  "{{{2
   let key_table = s:key_table()
   let key = ''
