@@ -51,6 +51,11 @@ function! operator#siege#prepare_to_change()  "{{{2
   if deco_to_delete is 0
     return ''
   endif
+  if !has_key(deco_to_delete, 'objs')
+    echo printf('Deco "%s" cannot be used as target for change.',
+    \           deco_to_delete.keys[0])
+    return ''
+  endif
   let deco_to_add = s:input_deco(1)
   if deco_to_add is 0
     return ''
