@@ -83,6 +83,10 @@ function! operator#siege#prepare_to_delete()  "{{{2
     " TODO: Show a friendly message on failure.
     return ''
   endif
+  if !has_key(deco, 'objs')
+    echo printf('Deco "%s" cannot be used for deletion.', deco.keys[0])
+    return ''
+  endif
 
   let s:deco_to_delete = deco
   " NB: g@iX and yiX don't set the same '[ and '].
