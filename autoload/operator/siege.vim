@@ -329,7 +329,7 @@ endfunction
 
 function! s:add_deco_blockwise(deleted_indent, indented, deco)  "{{{2
   " TODO: Implement a custom logic.
-  call s:add_deco_charwise(a:indented, a:deco)
+  call s:add_deco_charwise(a:deleted_indent, a:indented, a:deco)
 endfunction
 
 
