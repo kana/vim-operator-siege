@@ -33,6 +33,7 @@ endfunction
 function! operator#siege#add(motionwise)  "{{{2
   let deco = s:first ? s:input_deco(1) : s:deco_to_add
   if deco is 0
+    " TODO: Show a friendly message on failure.  Should include typed keys.
     return
   endif
 
@@ -49,6 +50,11 @@ function! operator#siege#prepare_to_change()  "{{{2
   " TODO: Show a friendly message on failure.
   let deco_to_delete = s:input_deco(0)
   if deco_to_delete is 0
+    return ''
+  endif
+  if !has_key(deco_to_delete, 'objs')
+    echo printf('Deco "%s" cannot be used as target for change.',
+    \           deco_to_delete.keys[0])
     return ''
   endif
   let deco_to_add = s:input_deco(1)
@@ -81,6 +87,10 @@ function! operator#siege#prepare_to_delete()  "{{{2
   let deco = s:input_deco(0)
   if deco is 0
     " TODO: Show a friendly message on failure.
+    return ''
+  endif
+  if !has_key(deco, 'objs')
+    echo printf('Deco "%s" cannot be used for deletion.', deco.keys[0])
     return ''
   endif
 
@@ -180,23 +190,6 @@ endfunction
 let s:WRONG_KEY = 0
 let s:INCOMPLETE_KEY = 1
 let s:COMPLETE_KEY = 2
-
-
-
-
-function! s:undeco_table()  "{{{2
-  let deco_table = s:deco_table()
-  if s:_deco_table isnot deco_table
-    let s:_deco_table = deco_table
-    let s:undeco_table = {}
-    for d in values(deco_table)
-      let s:undeco_table[d.chars[0] . d.chars[1]] = 1
-    endfor
-  endif
-  return s:undeco_table
-endfunction
-
-let s:_deco_table = {}
 
 
 
