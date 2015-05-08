@@ -33,6 +33,7 @@ endfunction
 function! operator#siege#add(motionwise)  "{{{2
   let deco = s:first ? s:input_deco(1) : s:deco_to_add
   if deco is 0
+    " TODO: Show a friendly message on failure.  Should include typed keys.
     return
   endif
 
