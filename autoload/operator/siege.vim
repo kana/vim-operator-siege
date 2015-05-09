@@ -32,7 +32,7 @@ endfunction
 
 function! operator#siege#add(motionwise)  "{{{2
   let deco = s:first ? s:input_deco(1) : s:deco_to_add
-  if deco is 0
+  if !get(deco, 'valid', 1)
     " TODO: Show a friendly message on failure.  Should include typed keys.
     return
   endif
@@ -49,7 +49,7 @@ endfunction
 function! operator#siege#prepare_to_change()  "{{{2
   " TODO: Show a friendly message on failure.
   let deco_to_delete = s:input_deco(0)
-  if deco_to_delete is 0
+  if !get(deco_to_delete, 'valid', 1)
     return ''
   endif
   if !has_key(deco_to_delete, 'objs')
@@ -58,7 +58,7 @@ function! operator#siege#prepare_to_change()  "{{{2
     return ''
   endif
   let deco_to_add = s:input_deco(1)
-  if deco_to_add is 0
+  if !get(deco_to_add, 'valid', 1)
     return ''
   endif
 
@@ -85,7 +85,7 @@ endfunction
 
 function! operator#siege#prepare_to_delete()  "{{{2
   let deco = s:input_deco(0)
-  if deco is 0
+  if !get(deco, 'valid', 1)
     " TODO: Show a friendly message on failure.
     return ''
   endif
@@ -206,7 +206,7 @@ function! s:input_deco(expand)  "{{{2
     elseif type == s:INCOMPLETE_KEY
       continue
     else  " type == s:WRONG_KEY
-      return 0
+      return {'valid': 0}
     endif
   endwhile
 endfunction
