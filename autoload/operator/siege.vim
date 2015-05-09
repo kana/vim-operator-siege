@@ -206,7 +206,7 @@ function! s:input_deco(expand)  "{{{2
     elseif type == s:INCOMPLETE_KEY
       continue
     else  " type == s:WRONG_KEY
-      return {'valid': 0}
+      return {'valid': 0, 'key': key}
     endif
   endwhile
 endfunction
