@@ -457,5 +457,12 @@ endfunction
 
 
 
+function! s:pos_lt(pa, pb)  "{{{2
+  return a:pa[1] < a:pb[1] || a:pa[1] == a:pb[1] && a:pa[2] < a:pb[2]
+endfunction
+
+
+
+
 " __END__  "{{{1
 " vim: foldmethod=marker
