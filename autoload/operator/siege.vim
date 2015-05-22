@@ -409,30 +409,44 @@ function! s:parse_context(ob, oe, ib, ie)  "{{{2
   let rc = getreg('z')
   let rt = getregtype('z')
 
-  call setpos('.', a:ob)
-  normal! v
-  call setpos('.', a:ib)
-  call search('.', 'bW')
-  normal! "zy
-  let bmatches = matchlist(@z, '^\(\s*\)\(.*\)')
-  let bsp = bmatches[1]
-  let bc = bmatches[2]
+  if s:pos_lt(a:ob, a:ib) && s:pos_lt(a:ie, a:oe)
+    call setpos('.', a:ob)
+    normal! v
+    call setpos('.', a:ib)
+    call search('.', 'bW')
+    normal! "zy
+    let bmatches = matchlist(@z, '^\(\s*\)\(.*\)')
+    let bsp = bmatches[1]
+    let bc = bmatches[2]
 
-  call setpos('.', a:oe)
-  normal! v
-  call setpos('.', a:ie)
-  call search('.', 'W')
-  normal! "zy
-  let ematches = matchlist(@z, '\(.\{-}\)\(\s*\)$')
-  let ec = ematches[1]
-  let esp = ematches[2]
+    call setpos('.', a:oe)
+    normal! v
+    call setpos('.', a:ie)
+    call search('.', 'W')
+    normal! "zy
+    let ematches = matchlist(@z, '\(.\{-}\)\(\s*\)$')
+    let ec = ematches[1]
+    let esp = ematches[2]
 
-  normal! v
-  call setpos('.', a:ib)
-  normal! o
-  call setpos('.', a:ie)
-  normal! "zy
-  let core = @z
+    normal! v
+    call setpos('.', a:ib)
+    normal! o
+    call setpos('.', a:ie)
+    normal! "zy
+    let core = @z
+  else
+    " aX region does not contain iX region.  So that iX seems to be empty.
+    call setpos('.', a:ob)
+    normal! v
+    call setpos('.', a:oe)
+    normal! "zy
+    let matches = matchlist(@z, '^\(\s*\)\(.\{-}\)\(\s*\)$')
+    let bsp = matches[1]
+    let bc = '...'
+    let core = ''
+    let ec = '...'
+    let esp = matches[3]
+  endif
 
   let V = s:strip(getline(a:ob[1])) ==# s:strip(bc)
   \    && s:strip(getline(a:oe[1])) ==# s:strip(ec)
