@@ -26,6 +26,27 @@ describe '<Plug>(operator-siege-delete)'
     Expect Do('f"ds"', 'foo."" bar') ==# 'foo. bar'
   end
 
+  it 'deletes a whole target linewise if it is linewise and it has no content'
+    Expect Do('wdsB', [
+    \   '{',
+    \   '  {',
+    \   '  }',
+    \   '}',
+    \ ]) ==# [
+    \   '{',
+    \   '}',
+    \ ]
+    Expect Do('wdsB', [
+    \   '[',
+    \   '  {',
+    \   '  }',
+    \   ']',
+    \ ]) ==# [
+    \   '[',
+    \   ']',
+    \ ]
+  end
+
   it 'deletes target linewise if decoration characters are placed linewise'
     Expect Do('dsB', [
     \   '{',
