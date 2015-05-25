@@ -358,8 +358,14 @@ function! s:delete_deco(deco)  "{{{2
   if esp != ''
     silent execute 'normal!' "\"=esp\<CR>p`["
   endif
-  let p = esp == '' ? 'p' : 'P'
-  silent execute 'normal!' "\"=core\<CR>".p
+  if core != ''
+    let p = esp == '' ? 'p' : 'P'
+    silent execute 'normal!' "\"=core\<CR>".p
+  else
+    " Replacing a region with an empty string is usually equivalent to delete
+    " the region.  But such replacing does not work for linewise region.
+    silent execute 'normal! d'
+  endif
   " `[ is important to locate the cursor at the natural position.
   normal! `[
 
