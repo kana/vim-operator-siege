@@ -346,7 +346,8 @@ function! s:delete_deco(deco)  "{{{2
   let ib = getpos("'<")
   let ie = getpos("'>")
 
-  let [mw, indent, bsp, bc, core, ec, esp] = s:parse_context(ob, oe, ib, ie)
+  let [mw, indent, bsp, bc, core, ec, esp]
+  \ = s:parse_context(ob, oe, ib, ie, a:deco)
   call setpos('.', ob)
   execute 'normal!' operator#user#visual_command_from_wise_name(mw)
   call setpos('.', oe)
@@ -357,8 +358,14 @@ function! s:delete_deco(deco)  "{{{2
   if esp != ''
     silent execute 'normal!' "\"=esp\<CR>p`["
   endif
-  let p = esp == '' ? 'p' : 'P'
-  silent execute 'normal!' "\"=core\<CR>".p
+  if core != ''
+    let p = esp == '' ? 'p' : 'P'
+    silent execute 'normal!' "\"=core\<CR>".p
+  else
+    " Replacing a region with an empty string is usually equivalent to delete
+    " the region.  But such replacing does not work for linewise region.
+    silent execute 'normal! d'
+  endif
   " `[ is important to locate the cursor at the natural position.
   normal! `[
 
@@ -400,7 +407,7 @@ endfunction
 
 
 
-function! s:parse_context(ob, oe, ib, ie)  "{{{2
+function! s:parse_context(ob, oe, ib, ie, deco)  "{{{2
   " AAA 'BBB CCC' DDD
   "     ^^     ^ ^
   "    /  \   /   \
@@ -436,15 +443,18 @@ function! s:parse_context(ob, oe, ib, ie)  "{{{2
     let core = @z
   else
     " aX region does not contain iX region.  So that iX seems to be empty.
+    " In this case, a:ob/a:oe and a:ib/i:oe represent different objects.
+    " Therefore bc and ec cannot be calculated from these positions.
+    " [X] TODO: Support decos with placeholders.
     call setpos('.', a:ob)
     normal! v
     call setpos('.', a:oe)
     normal! "zy
     let matches = matchlist(@z, '^\(\s*\)\(.\{-}\)\(\s*\)$')
     let bsp = matches[1]
-    let bc = '...'
+    let bc = a:deco.chars[0]  " [X]
     let core = ''
-    let ec = '...'
+    let ec = a:deco.chars[1]  " [X]
     let esp = matches[3]
   endif
 

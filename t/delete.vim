@@ -16,14 +16,37 @@ describe '<Plug>(operator-siege-delete)'
     Expect Do('fzdsb', '(foo) (bar) (baz)') ==# '(foo) (bar) baz'
   end
 
-  it 'deletes target decoration characters without content'
-    Expect Do('f(dsb', 'foo () bar') ==# 'foo  bar'
-    Expect Do('f)dsb', 'foo () bar') ==# 'foo  bar'
-    Expect Do('f(dsb', '(foo () bar)') ==# '(foo  bar)'
-    Expect Do('f)dsb', '(foo () bar)') ==# '(foo  bar)'
-    Expect Do('f"ds"', 'foo "" bar') ==# 'foo  bar'
-    Expect Do('f"ds"', 'foo "".bar') ==# 'foo .bar'
-    Expect Do('f"ds"', 'foo."" bar') ==# 'foo. bar'
+  context 'on empty-content target'
+    it 'deletes a whole target characterwise if it seems to be characterwise'
+      Expect Do('f(dsb', 'foo () bar') ==# 'foo  bar'
+      Expect Do('f)dsb', 'foo () bar') ==# 'foo  bar'
+      Expect Do('f(dsb', '(foo () bar)') ==# '(foo  bar)'
+      Expect Do('f)dsb', '(foo () bar)') ==# '(foo  bar)'
+      Expect Do('f"ds"', 'foo "" bar') ==# 'foo  bar'
+      Expect Do('f"ds"', 'foo "".bar') ==# 'foo .bar'
+      Expect Do('f"ds"', 'foo."" bar') ==# 'foo. bar'
+    end
+
+    it 'deletes a whole target linewise if it seems to be linewise'
+      Expect Do('wdsB', [
+      \   '{',
+      \   '  {',
+      \   '  }',
+      \   '}',
+      \ ]) ==# [
+      \   '{',
+      \   '}',
+      \ ]
+      Expect Do('wdsB', [
+      \   '[',
+      \   '  {',
+      \   '  }',
+      \   ']',
+      \ ]) ==# [
+      \   '[',
+      \   ']',
+      \ ]
+    end
   end
 
   it 'deletes target linewise if decoration characters are placed linewise'
