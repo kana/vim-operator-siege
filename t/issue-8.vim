@@ -16,6 +16,17 @@ describe 'vim-operator-siege'
   " 'foo 'bar' baz'
   " <----><-><---->
   " a' and i' on the second and third ' do not targt the second block.
+  "
+  " MEMO:
+  " function Rec()
+  "   let g:x = getpos('.')
+  "   return ''
+  " endfunction
+  " nmap <expr> rec  Rec()
+  " put ='foo bar baz'
+  " normal farec
+  " ...
+  " g:x equals [0, 2, 1, 0], not [0, 2, 6, 0].
 
   describe 'delete'
     it 'works on edge cases #8'
