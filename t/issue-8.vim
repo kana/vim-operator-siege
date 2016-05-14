@@ -12,6 +12,11 @@ describe 'vim-operator-siege'
     close!
   end
 
+  " MEMO:
+  " 'foo 'bar' baz'
+  " <----><-><---->
+  " a' and i' on the second and third ' do not targt the second block.
+
   describe 'delete'
     it 'works on edge cases #8'
       Expect Do('fads''', '''foo ''bar'' baz''') ==# '''foo bar baz'''
