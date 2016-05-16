@@ -4,8 +4,6 @@ runtime! t/helpers/**/*.vim
 describe 'vim-operator-siege'
   before
     new
-    nmap <buffer> ds  <Plug>(operator-siege-delete)
-    nmap <buffer> cs  <Plug>(operator-siege-change)
   end
 
   after

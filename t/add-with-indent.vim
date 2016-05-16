@@ -4,7 +4,6 @@ runtime! t/helpers/**/*.vim
 describe '<Plug>(operator-siege-add-with-indent)'
   before
     new
-    map <buffer> S  <Plug>(operator-siege-add-with-indent)
   end
 
   after

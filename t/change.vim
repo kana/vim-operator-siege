@@ -4,7 +4,6 @@ runtime! t/helpers/**/*.vim
 describe '<Plug>(operator-siege-change)'
   before
     new
-    nmap <buffer> cs  <Plug>(operator-siege-change)
   end
 
   after

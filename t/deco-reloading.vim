@@ -14,9 +14,6 @@ let s:decos2 = [
 describe 'g:operator_siege_decos'
   before
     new
-    map <buffer> s  <Plug>(operator-siege-add)
-    nmap <buffer> ds  <Plug>(operator-siege-delete)
-    nmap <buffer> cs  <Plug>(operator-siege-change)
   end
 
   after
