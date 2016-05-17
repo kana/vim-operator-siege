@@ -65,7 +65,6 @@ function! operator#siege#prepare_to_change()  "{{{2
 
   let s:deco_to_delete = deco_to_delete
   let s:deco_to_add = deco_to_add
-  call s:record_cursor_position()
   " NB: g@iX and yiX don't set the same '[ and '].
   return "\<Plug>(operator-siege-%change)" . deco_to_delete.objs[0]
 endfunction
@@ -97,7 +96,6 @@ function! operator#siege#prepare_to_delete()  "{{{2
   endif
 
   let s:deco_to_delete = deco
-  call s:record_cursor_position()
   " NB: g@iX and yiX don't set the same '[ and '].
   return "\<Plug>(operator-siege-%delete)" . deco.objs[0]
 endfunction
@@ -496,13 +494,6 @@ endfunction
 
 function! s:pos_lt(pa, pb)  "{{{2
   return a:pa[1] < a:pb[1] || a:pa[1] == a:pb[1] && a:pa[2] < a:pb[2]
-endfunction
-
-
-
-
-function! s:record_cursor_position()  "{{{2
-  let s:last_cursor_position = getpos('.')
 endfunction
 
 
