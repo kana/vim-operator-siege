@@ -135,9 +135,9 @@ let s:default_decos = [
 \   {'chars': ['<', '>'], 'objs': ['a<', 'i<'], 'keys': ['>', 'a']},
 \   {'chars': ['[', ']'], 'objs': ['a[', 'i['], 'keys': ['[', ']', 'r']},
 \   {'chars': ['{', '}'], 'objs': ['a{', 'i{'], 'keys': ['{', '}', 'B']},
-\   {'chars': ["'", "'"], 'objs': ["a'", "i'"], 'keys': ["'"]},
-\   {'chars': ['"', '"'], 'objs': ['a"', 'i"'], 'keys': ['"']},
-\   {'chars': ['`', '`'], 'objs': ['a`', 'i`'], 'keys': ['`']},
+\   {'chars': ["'", "'"], 'objs': ["a'", "i'"], 'keys': ["'"], 'offset': 1},
+\   {'chars': ['"', '"'], 'objs': ['a"', 'i"'], 'keys': ['"'], 'offset': 1},
+\   {'chars': ['`', '`'], 'objs': ['a`', 'i`'], 'keys': ['`'], 'offset': 1},
 \   {'chars': ["<\1>", "</\1>"], 'objs': ['at', 'it'], 'keys': ['<', 't'],
 \    'finisher': '>'},
 \   {'chars': ['@', '@'], 'keys': ['@']},
@@ -342,8 +342,17 @@ function! s:delete_deco(deco)  "{{{2
   let oe = getpos("']")
   call setpos('.', ob)
   call search('\S', 'cW')  " Skip spaces included by a' and others.
+  if get(a:deco, 'offset', 0)
+    " Skip opening quote to target the correct block in nested quotes.
+    " For example:
+    "
+    "     'foo 'bar' baz'
+    "     AAAAAABBBCCCCCC
+    "
+    " The cursor must be located at B to target 'bar' by a' and i'.
+    call search('\S', 'W')
+  endif
 
-  call setpos('.', s:last_cursor_position)
   normal! v
   execute 'normal' s:deco_to_delete.objs[1]
   execute 'normal!' "\<Esc>"
