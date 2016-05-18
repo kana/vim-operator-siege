@@ -33,9 +33,13 @@ describe 'g:operator_siege_decos'
   end
 
   it 'asks and expands placeholders in a decorator'
+    " Note that vit at T in <xxx>T</xxx> targets the whole element instead of
+    " the inner text.
     Expect Do("fbsiw<div\<Return>", 'foo bar baz') ==# 'foo <div>bar</div> baz'
     Expect Do('fodst', 'f<em>o</em>o') ==# 'foo'
+    Expect Do('fodst', 'f<em>oo</em>l') ==# 'fool'
     Expect Do('focstB', 'f<em>o</em>o') ==# 'f{o}o'
+    Expect Do('focstB', 'f<em>oo</em>l') ==# 'f{oo}l'
   end
 
   it 'accepts also a custom finisher to input replacements of placeholders'
