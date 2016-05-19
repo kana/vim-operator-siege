@@ -8,9 +8,6 @@ let g:operator_siege_decos = [
 describe 'vim-operator-siege'
   before
     new
-    map <buffer> s  <Plug>(operator-siege-add)
-    nmap <buffer> ds  <Plug>(operator-siege-delete)
-    nmap <buffer> cs  <Plug>(operator-siege-change)
   end
 
   after

@@ -4,7 +4,6 @@ runtime! t/helpers/**/*.vim
 describe '<Plug>(operator-siege-add)'
   before
     new
-    map <buffer> s  <Plug>(operator-siege-add)
   end
 
   after

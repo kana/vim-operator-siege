@@ -4,7 +4,6 @@ runtime! t/helpers/**/*.vim
 describe '<Plug>(operator-siege-delete)'
   before
     new
-    nmap <buffer> ds  <Plug>(operator-siege-delete)
   end
 
   after

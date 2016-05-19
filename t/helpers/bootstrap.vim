@@ -15,6 +15,7 @@ function s:bootstrap()
 endfunction
 call s:bootstrap()
 
+
 runtime! plugin/operator/siege.vim
 map s  <Plug>(operator-siege-add)
 map S  <Plug>(operator-siege-add-with-indent)
