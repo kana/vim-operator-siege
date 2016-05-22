@@ -302,7 +302,7 @@ endfunction
 
 
 function! s:add_deco_charwise(deleted_indent, indented, deco)  "{{{2
-  let p = col('$') - 1 == col("']") ? 'p' : 'P'
+  let p = col([line("']"), '$']) - 1 == col("']") ? 'p' : 'P'
   normal! `[v`]"zd
   let @z = a:deco.chars[0] . @z . a:deco.chars[1]
   " p is important to set meaningful positions to '[ and '], and
