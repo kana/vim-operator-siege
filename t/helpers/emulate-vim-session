@@ -1,7 +1,9 @@
 #!/bin/bash
 
 vim -u NONE -i NONE -N \
-  -S 't/helpers/bootstrap.vim' \
+  -c "set packpath^=$PWD/t" \
+  -c 'packloadall!' \
+  -c 'source t/helpers/bootstrap.vim' \
   -s <(cat "$1"; echo $'\c\\cn:w! t/,test.out\n:qall!') \
   >/dev/null 2>&1
 
