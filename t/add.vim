@@ -95,4 +95,14 @@ describe '<Plug>(operator-siege-add)'
     " \   '  qux',
     " \ ]
   end
+
+  it 'encloses target region with spaced decoration characters'
+    Expect Do('siw b', 'foo bar baz') ==# '( foo ) bar baz'
+    Expect Do('fzsiw b', 'foo bar baz') ==# 'foo bar ( baz )'
+  end
+
+  it 'encloses target region with spaces'
+    Expect Do('siw  ', '(foo) bar baz') ==# '( foo ) bar baz'
+    Expect Do('fzsiw  ', 'foo bar (baz)') ==# 'foo bar ( baz )'
+  end
 end
