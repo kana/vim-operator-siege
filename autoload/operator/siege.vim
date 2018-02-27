@@ -144,6 +144,7 @@ let s:default_decos = [
 \   {'chars': ['_', '_'], 'keys': ['_']},
 \   {'chars': ['|', '|'], 'keys': ['|']},
 \   {'chars': ['$', '$'], 'keys': ['$']},
+\   {'chars': [' ', ' '], 'keys': [' ']},
 \ ]
 
 if !exists('g:operator_siege_decos')
