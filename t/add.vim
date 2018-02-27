@@ -102,7 +102,7 @@ describe '<Plug>(operator-siege-add)'
   end
 
   it 'encloses target region with spaces'
-    Expect Do('siw  ', '(foo) bar baz') ==# '( foo ) bar baz'
+    Expect Do('ffsiw  ', '(foo) bar baz') ==# '( foo ) bar baz'
     Expect Do('fzsiw  ', 'foo bar (baz)') ==# 'foo bar ( baz )'
   end
 end
