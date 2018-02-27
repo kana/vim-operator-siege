@@ -203,13 +203,22 @@ let s:COMPLETE_KEY = 2
 
 function! s:input_deco(expand)  "{{{2
   let key_table = s:key_table()
+  let spaced = v:false
   let key = ''
   while 1
-    let key .= nr2char(getchar())
+    let k = nr2char(getchar())
+    if k == ' ' && key == '' && !spaced
+      let spaced = v:true
+      continue
+    endif
+    let key .= k
+
     let type = get(key_table, key, s:WRONG_KEY)
     if type == s:COMPLETE_KEY
-      let deco = s:deco_table()[key]
-      return a:expand ? s:expand_deco(deco) : deco
+      let deco = copy(s:deco_table()[key])
+      let deco = a:expand ? s:expand_deco(deco) : deco
+      let deco.spaced = spaced
+      return deco
     elseif type == s:INCOMPLETE_KEY
       continue
     else  " type == s:WRONG_KEY
