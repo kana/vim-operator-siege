@@ -144,7 +144,7 @@ let s:default_decos = [
 \   {'chars': ['_', '_'], 'keys': ['_']},
 \   {'chars': ['|', '|'], 'keys': ['|']},
 \   {'chars': ['$', '$'], 'keys': ['$']},
-\   {'chars': [' ', ' '], 'keys': [' ']},
+\   {'chars': ['', ''], 'keys': [' '], 'blank': v:true},
 \ ]
 
 if !exists('g:operator_siege_decos')
@@ -313,9 +313,16 @@ endfunction
 
 function! s:add_deco_charwise(deleted_indent, indented, deco)  "{{{2
   let p = col([line("']"), '$']) - 1 == col("']") ? 'p' : 'P'
+
   normal! `[v`]"zd
-  let s = a:deco.spaced ? ' ' : ''
-  let @z = a:deco.chars[0] . s . @z . s . a:deco.chars[1]
+
+  if get(a:deco, 'blank', v:false)
+    let @z = ' ' . @z . ' '
+  else
+    let s = a:deco.spaced ? ' ' : ''
+    let @z = a:deco.chars[0] . s . @z . s . a:deco.chars[1]
+  endif
+
   " p is important to set meaningful positions to '[ and '], and
   " `[ is important to locate the cursor at the natural position.
   execute 'normal!' '"z'.p.'`['
@@ -326,10 +333,22 @@ endfunction
 
 function! s:add_deco_linewise(deleted_indent, indented, deco)  "{{{2
   normal! `[V`]"zy
+
   let indent = a:deleted_indent is 0 ? matchstr(@z, '^\s*') : a:deleted_indent
-  let @z = indent . a:deco.chars[0] . "\n"
-  \      . (a:indented ? s:indent(@z) : @z)
-  \      . indent . a:deco.chars[1] . "\n"
+
+  if get(a:deco, 'blank', v:false)
+    let @z = "\n"
+    \      . (a:indented ? s:indent(@z) : @z)
+    \      . "\n"
+  else
+    let s = a:deco.spaced ? "\n" : ''
+    let @z = indent . a:deco.chars[0] . "\n"
+    \      . s
+    \      . (a:indented ? s:indent(@z) : @z)
+    \      . s
+    \      . indent . a:deco.chars[1] . "\n"
+  endif
+
   " p is important to set meaningful positions to '[ and '], and
   " v_p is important to avoid unexpected results on edge cases.
   normal! `[V`]"zp
