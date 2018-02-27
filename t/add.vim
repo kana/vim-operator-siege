@@ -105,4 +105,9 @@ describe '<Plug>(operator-siege-add)'
     Expect Do('ffsiw  ', '(foo) bar baz') ==# '( foo ) bar baz'
     Expect Do('fzsiw  ', 'foo bar (baz)') ==# 'foo bar ( baz )'
   end
+
+  it 'adds inner blank lines instead of spaces for linewise target'
+    Expect Do('Vs B', 'foo bar baz') ==# ['{', '', 'foo bar baz', '', '}']
+    Expect Do('Vs  ', 'foo bar baz') ==# ['', 'foo bar baz', '']
+  end
 end
