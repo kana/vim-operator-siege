@@ -26,4 +26,18 @@ describe 'operator-siege'
       Expect Do('Vs  ', 'foo bar baz') ==# ['', 'foo bar baz', '']
     end
   end
+
+  context 'delete'
+    it 'ignores spaced flag'
+      redir => messages
+      Expect Do('fads b', 'foo( bar )baz') ==# 'foo bar baz'
+      redir END
+      Expect messages == ''
+
+      redir => messages
+      Expect Do('fads  ', 'foo bar baz') ==# 'foo bar baz'
+      redir END
+      Expect messages =~# 'Deco " " cannot be used for deletion.'
+    end
+  end
 end
