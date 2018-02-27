@@ -4,7 +4,9 @@ vim -u NONE -i NONE -N \
   -c "set packpath^=$PWD/t" \
   -c 'packloadall!' \
   -c 'source t/helpers/bootstrap.vim' \
-  -s <(cat "$1"; echo $'\c\\cn:w! t/,test.out\n:qall!') \
+  -c "source! $1" \
+  -c 'write t/,test.out' \
+  -c 'qall!' \
   >/dev/null 2>&1
 
 diff="$(diff --unified "$2" t/,test.out)"
