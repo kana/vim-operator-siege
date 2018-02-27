@@ -313,7 +313,8 @@ endfunction
 function! s:add_deco_charwise(deleted_indent, indented, deco)  "{{{2
   let p = col([line("']"), '$']) - 1 == col("']") ? 'p' : 'P'
   normal! `[v`]"zd
-  let @z = a:deco.chars[0] . @z . a:deco.chars[1]
+  let s = a:deco.spaced ? ' ' : ''
+  let @z = a:deco.chars[0] . s . @z . s . a:deco.chars[1]
   " p is important to set meaningful positions to '[ and '], and
   " `[ is important to locate the cursor at the natural position.
   execute 'normal!' '"z'.p.'`['
