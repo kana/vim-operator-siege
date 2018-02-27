@@ -33,7 +33,9 @@ describe 'operator-siege'
       Expect Do('fads b', 'foo( bar )baz') ==# 'foo bar baz'
       redir END
       Expect messages == ''
+    end
 
+    it 'does not support deleting spaces'
       redir => messages
       Expect Do('fads  ', 'foo bar baz') ==# 'foo bar baz'
       redir END
