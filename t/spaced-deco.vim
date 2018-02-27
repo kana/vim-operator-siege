@@ -42,4 +42,25 @@ describe 'operator-siege'
       Expect messages =~# 'Deco " " cannot be used for deletion.'
     end
   end
+
+  context 'change'
+    it 'supports spaced deco for replacement'
+      Expect Do('csb B', '(foo) (bar) (baz)') ==# '{ foo } (bar) (baz)'
+      Expect Do('fzcsb  ', '(foo) (bar) (baz)') ==# '(foo) (bar)  baz '
+    end
+
+    it 'ignores spaced deco for target'
+      redir => messages
+      Expect Do('cs bB', '( foo ) (bar) (baz)') ==# '{ foo } (bar) (baz)'
+      redir END
+      Expect messages == ''
+    end
+
+    it 'does not support spaces for target'
+      redir => messages
+      Expect Do('fzcs  B', '(foo) (bar) ( baz )') ==# '(foo) (bar) ( baz )'
+      redir END
+      Expect messages =~# 'Deco " " cannot be used as target for change.'
+    end
+  end
 end
